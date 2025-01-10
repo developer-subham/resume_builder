@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  
+  <!-- External CSS and Fonts -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+  <!-- External JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!-- icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    .navbar {
+      margin-bottom: 0;
+      background-color: #ffbe45;
+      z-index: 1;
+      border: 0;
+      font-size: 16px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 1px;
+      padding: 0.5%;  
+      color: black;
+    }
+
+    #nav_img{
+      height: 60px;
+      width: 190px;
+    }
+
+    .navbar-default .navbar-nav > li > a {
+      color: #000;
+    }
+    .navbar-nav, a{
+        font-family: 'Roboto';
+        color: black;
+        font-size: 20px;
+    }
+    .dropdown-menu {
+      min-width: 160px; 
+      text-align: left;
+    }
+
+    .dropdown-menu > li > a {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .dropdown-menu > li > a:hover {
+      background-color: #f0f2ff;
+      color: #000;
+    }
+
+    .dropdown-toggle:hover .dropdown-menu {
+      display: block;
+    }
+  </style>
+
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <!-- Navbar Header -->
+      <div class="navbar-header">
+          <a href="/">
+            <img src="/static/images/logo.png" id="nav_img">
+          </a>
+      </div>
+
+      <!-- Navbar Links -->
+      <div id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#features">Resumes</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fas fa-user-circle"></i> 
+              <span id="userName">User Name</span>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/settings"><i class="fa-solid fa-gear"></i> Settings</a></li>
+              <li><a href="mailto:subhambehera2104@gmail.com"><i class="fa-solid fa-circle-question"></i> Feedback</a></li>
+              <li class="divider"></li>
+              <li><a href="/logout" id="logoutButton"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</body>
+<script>
+  const name = localStorage.getItem('name');    
+    if (name) {
+        document.getElementById('userName').textContent = name;
+    }
+</script>
+</html>

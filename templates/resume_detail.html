@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume detail</title>
+    <link rel="stylesheet" href="/static/css/resume.css">
+</head>
+<body>
+    {% include 'common/header.html' %}
+    <div class="container mt-5">
+        <h4 class="text-center"></h4>
+        <ul class="nav nav-tabs resume-nav-tabs" id="cvTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="skills-tab" data-bs-toggle="tab" href="#skills" role="tab" aria-controls="skills" aria-selected="false">Skills</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="education-tab" data-bs-toggle="tab" href="#education" role="tab" aria-controls="education" aria-selected="false">Education</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="projects-tab" data-bs-toggle="tab" href="#projects" role="tab" aria-controls="projects" aria-selected="false">Projects</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="hobbies-tab" data-bs-toggle="tab" href="#hobbies" role="tab" aria-controls="hobbies" aria-selected="false">Hobbies</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="experience-tab" data-bs-toggle="tab" href="#experience" role="tab" aria-controls="experience" aria-selected="false">Experience</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="template-tab" data-bs-toggle="tab" href="#template" role="tab" aria-controls="template" aria-selected="false">Resume Template</a>
+            </li>
+        </ul>
+    
+        <div class="tab-content mt-4" id="cvTabContent">
+            <!-- profile Tab -->
+            <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <form id="profileForm">
+                    <div class="row profile-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" name="full_name" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="mobile" class="form-label">Mobile</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" name="gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="website">Website</label>
+                            <input type="url" id="website" name="website" class="form-control" placeholder="Website">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="github">GitHub</label>
+                            <input type="url" id="github" name="github" class="form-control" placeholder="GitHub">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="linkedin">LinkedIn</label>
+                            <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="LinkedIn">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="resumePic" class="form-label">Upload Resume Picture</label>
+                            <input type="file" id="resumePic" class="form-control">
+                        </div>
+                    </div>
+    
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-success me-3" id="saveProfileBtn">
+                            <i class="bi bi-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-primary me-3" onclick="goToNextTab('skills')">
+                            Next <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+    
+            <!-- Skills Tab -->
+            <div class="tab-pane fade" id="skills" role="tabpanel" aria-labelledby="skills-tab">
+                <form id="skillsForm">
+                    <div id="skillsList">
+                        <!-- Existing skills dynamically populated -->
+                    </div>
+                    <button type="button" class="btn btn-theme mb-3" id="addSkillBtn">+ Add New</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-3" onclick="goToPreviousTab('profile')">
+                            <i class="bi bi-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-success me-3" id="saveSkillsBtn">
+                            <i class="bi bi-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="goToNextTab('education')">
+                            Next <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+    
+            <!-- Education Tab -->
+            <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
+                <form id="educationForm">
+                    <div id="educationList">
+                        <!-- Existing education rows dynamically populated -->
+                    </div>
+                    <button type="button" class="btn btn-theme mb-3" id="addEducationBtn">+ Add New</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-3" onclick="goToPreviousTab('skills')">
+                            <i class="bi bi-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-success me-3" id="saveEducationBtn">
+                            <i class="bi bi-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="goToNextTab('projects')">
+                            Next <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+    
+            <!-- Projects Tab -->
+            <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
+                <form id="projectsForm">
+                    <div id="projectsList">
+                        <!-- Existing projects rows dynamically populated -->
+                    </div>
+                    <button type="button" class="btn btn-theme mb-3" id="addProjectBtn">+ Add New</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-3" onclick="goToPreviousTab('education')">
+                            <i class="bi bi-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-success me-3" id="saveProjectsBtn">
+                            <i class="bi bi-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="goToNextTab('hobbies')">
+                            Next <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+    
+            
+            <!-- Hobbies Tab -->
+            <div class="tab-pane fade" id="hobbies" role="tabpanel" aria-labelledby="hobbies-tab">
+                <form id="hobbiesForm">
+                    <div id="hobbiesList">
+                        <!-- Existing hobbies rows dynamically populated -->
+                    </div>
+                    <button type="button" class="btn btn-theme mb-3" id="addHobbyBtn">+ Add New</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-3" onclick="goToPreviousTab('projects')">
+                            <i class="bi bi-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-success me-3" id="saveHobbiesBtn">
+                            <i class="bi bi-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="goToNextTab('experience')">
+                            Next <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+    
+    
+            <!-- Experience Tab -->
+            <div class="tab-pane fade" id="experience" role="tabpanel" aria-labelledby="experience-tab">
+                <form id="experienceForm">
+                    <div id="experienceList">
+                        <!-- Existing experience rows dynamically populated -->
+                    </div>
+                    <button type="button" class="btn btn-theme mb-3" id="addExperienceBtn">+ Add New</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-3" onclick="goToPreviousTab('hobbies')">
+                            <i class="bi bi-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-success me-3" id="saveExperienceBtn">
+                            <i class="bi bi-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="goToNextTab('template')">
+                            Next <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+    
+            <!-- Template Tab -->
+            <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
+                <form id="templateForm">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="templateSelect" class="form-label">Select Resume Template</label>
+                            <select class="form-select" id="themeName" name="themeName">
+                                <option value="basic">Basic</option>
+                                <option value="premium">Premium</option>
+                                <option value="pro">Pro</option>
+                            </select>
+                        </div>
+    
+                        <div class="col-md-4">
+                            <label for="themeColorSelect" class="form-label">Select Theme Color</label>
+                            <select class="form-select" id="themeColor" name="themeColor">
+                                <option value="#000000" selected>Black</option>
+                                <option value="#0056b3">Blue</option>
+                                <option value="#e74c3c">Red</option>
+                                <option value="#2ecc71">Green</option>
+                                <option value="#f39c12">Orange</option>
+                                <option value="#8e44ad">Purple</option>
+                                <option value="#34495e">Dark Gray</option>
+                                <option value="#1abc9c">Turquoise</option>
+                                <option value="#d35400">Carrot</option>
+                                <option value="#27ae60">Emerald</option>
+                                <option value="#2980b9">Sky Blue</option>
+                                <option value="#f1c40f">Yellow</option>
+                                <option value="#c0392b">Crimson</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="button" class="btn btn-secondary me-3" onclick="goToPreviousTab('experience')">
+                            <i class="bi bi-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-success me-3" id="saveResumeTemplateBtn">
+                            <i class="bi bi-save"></i> Save
+                        </button>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button id="downloadResumeBtn" class="btn btn-theme">Download Resume</button>
+                        </div>
+                    </div>
+    
+                    <div id="resumePreview" class="mt-4">
+                        <h3>Resume Preview</h3>
+                        <br>
+                        <div id="resumeContent">
+                            <!-- Preview of the resume based on the selected template will go here -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include 'common/footer.html' %}
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link rel="icon" type="image/x-icon" sizes="180x180" href="https://i.pinimg.com/236x/1c/4a/81/1c4a81047ba09120384d69899d5bb09a.jpg">
+
+    <!-- Link Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body style="background-color: #ffeed0">
+
+    <!-- Signup page -->
+
+    <div class="container py-5" style="margin-top: 10%;" id="registerForm">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="row g-0">
+                        <!-- Signup Section -->
+                        <div class="col-md-6" style="background-color: orange;">
+                            <div class="card-body">
+                                <h2 class="card-title text-center mb-4">Sign Up</h2>
+                                <form id="registerForm">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-control" id="gender" name="gender">
+                                            <option value="" disabled>Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="checkbox" required>you agree to our <a href="https://policies.google.com/terms?hl=en-US ">Terms and condition</a>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn">Sign Up</button>
+                                    </div>
+                                    
+                                    <div class="mt-3 text-center">
+                                        <p>Already have an account? <a href="#loginForm" class="text-decoration-none">Login</a></p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <img 
+                                src="https://i.pinimg.com/736x/17/4a/84/174a848797c353a481b94c11e76c48e7.jpg" 
+                                class="img-fluid" id="auth_image" alt="Sign Up Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Login page -->
+<div class="container py-5" style="margin-top: 10%; display: none;" id="loginForm">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <img 
+                            src="https://i.pinimg.com/736x/63/77/36/63773689c5405621be6336d5e91b5b61.jpg"" 
+                            class="img-fluid rounded-start" id="auth_image">
+                    </div>
+                    
+                    <!-- Form Section -->
+                    <div class="col-md-6" style="background-color: orange;">
+                        <div class="card-body">
+                            <h2 class="card-title text-center mb-4">Login</h2>
+                            <form id="loginForm">
+                                <div id="loginError" style="color: red; display: none;"></div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <a href="/" class="text-decoration-none">Forget password</a>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn">Login</button>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <p>I'm new user in this website <a href="#registerForm" class="text-decoration-none">Create account</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/authController.js"></script>
+</body>
+</html>

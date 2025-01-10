@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body style="background-color: #fff5e2;">
+
+    {% include 'common/header.html' %}
+
+    <!-- Main Content -->
+    <div class="container" id="mainContent">
+        <h1 class="text-center main">Dashboard</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" id="newResumeName" class="form-control" placeholder="Enter Resume Name">
+                    <button class="btn create" id="createResumeBtn">Create Resume</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="resumesGrid"></div> 
+    </div>
+    
+    
+    
+</body>
+<script src="{{ url_for('static', filename='js/resumeController.js') }}"></script>
+</html>
