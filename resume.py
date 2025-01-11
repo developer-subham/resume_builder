@@ -81,3 +81,12 @@ def delete_resume(resume_id):
     db.commit()
 
     return jsonify({"message": "Resume deleted successfully"}), 200
+
+@resume_bp.route('/<int:resume_id>', methods=['GET'])
+@jwt_required()
+def get_resume_by_id_and_user_id(resume_id):
+    user_id = get_jwt_identity()
+    resumes = get_resume_data(user_id, resume_id)
+    if len(resumes) == 0:
+        return jsonify({"error": "Resume not found or access denied"}), 404
+    return jsonify(resumes[0])

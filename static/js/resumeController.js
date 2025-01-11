@@ -9,40 +9,34 @@ class ResumeController {
 
     async loadResumes() {
         try {
-            // Fetch resumes from the API
             const resumes = await this.fetchAllResumes();
-
-            // Get the resumes grid element
             const grid = document.getElementById('resumesGrid');
-            if (!grid) {
-                console.error("Element with id 'resumesGrid' not found.");
+            grid.innerHTML = ''; // Clear existing content
+
+            if (resumes.length === 0) {
+                grid.innerHTML = '<p class="text-muted">No resumes found. Create your first resume above!</p>';
                 return;
             }
-    
-            // Clear existing content
-            grid.innerHTML = '';
-    
-            // Check if resumes array is empty
-            if (!resumes || resumes.length === 0) {
-                grid.innerHTML = '<p class="text-dark" style = "font-size: 20px;">Resume not created. Crearte your first resume!</p>';
-                return;
-            }
-        
-        // Populate the grid with resume cards
-        resumes.forEach((resume) => {
-                const createdAt = resume.created_at ? new Date(resume.created_at).toLocaleDateString() : "N/A";
+
+            resumes.forEach((resume) => {
                 const card = document.createElement('div');
-                card.className = 'col-md-3';
-                card.style = "border-radius: 10px; padding: 1%; margin: 1%; background-color: #ffe4b1; font-size: 16px;"
+                card.className = 'col-md-3 mb-3';
+                card.style = `
+                    margin: 1%;
+                    padding: 1%;
+                    background-color: #ffdc9c;
+                    border-radius: 10px;
+                    font-size: 18px;
+                `;
                 card.innerHTML = `
                   <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">${resume.name}</h3>
-                            <p class="card-text">Created: ${createdAt}</p>
+                            <h5 class="card-title">${resume.name}</h5>
+                            <p class="card-text">Created: ${new Date(resume.created_at).toLocaleDateString()}</p>
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-warning" onclick="editResume(${resume.id})"><i class="fas fa-pen"></i> Edit</button>
-                                <button class="btn btn-success" onclick="viewResume(${resume.id})"><i class="fas fa-eye"></i> View</button>
-                                <button class="btn btn-danger" onclick="deleteResume(${resume.id})"><i class="fas fa-trash"></i> Delete</button>
+                                <button class="btn btn-sm btn-warning" onclick="editResume(${resume.id})"><i class="fas fa-pen"></i> Edit</button>
+                                <button class="btn btn-sm btn-success" onclick="viewResume(${resume.id})"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteResume(${resume.id})"><i class="fas fa-trash"></i> Delete</button>
                             </div>
                         </div>
                     </div>
@@ -51,12 +45,9 @@ class ResumeController {
             });
         } catch (error) {
             console.error('Error loading resumes:', error);
-            const grid = document.getElementById('resumesGrid');
-            if (grid) {
-                grid.innerHTML = '<p class="text-danger">Failed to load resumes. Please try again later.</p>';
-            }
         }
     }
+
     async createResumeHandler() {
         const resumeName = document.getElementById('newResumeName').value.trim();
         if (!resumeName) {
@@ -66,8 +57,7 @@ class ResumeController {
 
         try {
             const newResume = await this.createResume(resumeName);
-            if (newResume) {
-                alert(`Resume "${resumeName}" created successfully!`);
+            if (newResume) {    
                 this.loadResumes(); // Refresh resumes grid
                 document.getElementById('newResumeName').value = ''; // Clear input box
             }
@@ -79,11 +69,10 @@ class ResumeController {
 
     async fetchAllResumes() {
         try {
-            const response = await fetch('/api/resume', { // Remove trailing slash
+            const response = await fetch('/api/resume/', {
                 method: "GET",
                 headers: this._getAuthHeaders(),
             });
-            
             if (!response.ok) throw new Error(`Error fetching resumes: ${response.statusText}`);
             return await response.json();
         } catch (error) {
@@ -116,7 +105,6 @@ class ResumeController {
                 headers: this._getAuthHeaders(),
             });
             if (!response.ok) throw new Error(`Error deleting resume: ${response.statusText}`);
-            alert('Resume deleted successfully!');
             this.loadResumes(); // Refresh resumes grid 
         } catch (error) {
             console.error(error);

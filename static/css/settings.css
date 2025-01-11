@@ -1,42 +1,38 @@
     /* Custom Styles */
     body {
-        background-color: #f8f9fa;
+        display: flex;
     }
-    .modal-content {
-        opacity: 0.95;
-        background-color: #fff9f0;
-    }
-    .navbar {
+
+    .sidebar {
+        transition: width 0.3s;
         background-color: #343a40;
         color: white;
+        height: 100vh;
+        overflow: hidden;
     }
-    .side-navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
+
+    .sidebar.expanded {
         width: 250px;
-        height: 100%;
-        background-color: #343a40;
-        color: white;
-        padding-top: 20px;
-        transition: all 0.3s ease-in-out;
     }
-    .side-navbar .nav-item {
-        padding: 10px 20px;
+
+    .sidebar.collapsed {
+        width: 60px;
     }
-    .side-navbar .nav-item:hover {
-        background-color: #495057;
-    }
-    .side-navbar .nav-link {
-        color: white;
-    }
-    .side-navbar .close-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        color: white;
-        font-size: 20px;
+
+    .sidebar .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
         cursor: pointer;
+    }
+
+    .sidebar .nav-item .nav-text {
+        margin-left: 10px;
+        display: inline-block;
+    }
+
+    .sidebar.collapsed .nav-item .nav-text {
+        display: none;
     }
     .settings-content {
         margin-left: 46%;
@@ -45,9 +41,6 @@
     }
     .dropdown-menu {
         min-width: 100px;
-    }
-    .modal-backdrop {
-        opacity: 0.5 !important;
     }
     .label-control{
         font-size: 19px;
@@ -62,4 +55,23 @@
         width: 100%;
         height: auto;
         margin: 5%;
+    }
+
+    #general-settings{
+        padding: 3%;
+        background-color: #eeeeee;
+        margin-top: 10%;
+        border-radius: 20px;
+        box-shadow: 20px 10px 30px #88888888;
+    }
+    #data-control-settings{
+        padding: 3%;
+        background-color: #eeeeee;
+        margin-top: 10%;
+        border-radius: 20px;
+        box-shadow: 20px 10px 30px #88888888;
+    }
+    .modal-footer, button{
+        margin-top: 10px;
+        margin: 1%;
     }
