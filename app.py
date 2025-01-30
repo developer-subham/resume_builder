@@ -33,15 +33,23 @@ def index():
 
 @app.route('/auth', methods=['GET'])
 def auth_controller():
-    return render_template('auth.html')
+    return render_template('user/auth.html')
 
 @app.route('/user/resumes/', methods=['GET'])
 def resumes():
-    return render_template('resumes.html')
+    return render_template('resume/resumes.html')
 
+@app.route('/resume/<int:resume_id>', methods=['GET'])
+def get_resume_detail(resume_id):
+    return render_template('resume/resume_detail.html')
+
+@app.route('/resume/preview/<int:resume_id>', methods=['GET'])
+def get_resume_preview(resume_id):
+    return render_template('resume/resume_preview.html')
+    
 @app.route('/settings', methods=['GET'])
 def settings():
-    return render_template('settings.html')
+    return render_template('user/settings.html')
 
 # Handle 404 error
 @app.errorhandler(404)

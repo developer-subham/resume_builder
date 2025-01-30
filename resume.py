@@ -59,6 +59,57 @@ def get_resumes_by_user_id():
         return jsonify({"error": "No resumes found for this user"}), 404
     return jsonify(resumes)
 
+@resume_bp.route('/<int:resume_id>', methods=['GET'])
+@jwt_required()
+def get_resume_by_id_and_user_id(resume_id):
+    user_id = get_jwt_identity()
+    resumes = get_resume_data(user_id, resume_id)
+    if len(resumes) == 0:
+        return jsonify({"error": "Resume not found or access denied"}), 404
+    return jsonify(resumes[0])
+
+@resume_bp.route('/template/<int:resume_id>/<theme_name>', methods=['GET'])
+@jwt_required()
+def get_resume_template(resume_id, theme_name):
+    user_id = get_jwt_identity()
+    resumes = get_resume_data(user_id, resume_id)
+    if len(resumes) == 0:
+        return jsonify({"error": "Resume not found or access denied"}), 404
+    return render_template(f"resume/themes/{theme_name}.html", **resumes[0])
+
+@resume_bp.route('/preview/<int:resume_id>/', methods=['GET'])
+@jwt_required()
+def get_resume_preview_of_stored_theme(resume_id):
+    user_id = get_jwt_identity()
+    resumes = get_resume_data(user_id, resume_id)
+    if len(resumes) == 0:
+        return jsonify({"error": "Resume not found or access denied"}), 404
+    resume = resumes[0]
+    if resume['resume_template']:
+        resume_template = resume['resume_template']['theme_name']
+        return render_template(f"resume/themes/{resume_template}.html", **resume)
+    else:
+        return "Please click on edit button, fill resume details and select resume template"
+
+@resume_bp.route('/<int:resume_id>/section/<section>', methods=['PUT'])
+@jwt_required()
+def save_section(resume_id, section):
+    user_id = get_jwt_identity()  # Extract user_id from JWT
+    
+    if section not in ["profile", "experience", "projects", "education", "skills", "hobbies", "resume_template"]:
+        return jsonify({"error": "Invalid section"}), 400
+
+    data = request.json
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(f"UPDATE resumes SET {section} = ? WHERE user_id = ? and id = ?", (json.dumps(data), user_id, resume_id))
+    db.commit()
+
+    if cursor.rowcount == 0:
+        return jsonify({"error": "Resume not found"}), 404
+    return jsonify({"message": f"{section.capitalize()} updated successfully"})
+
+
 @resume_bp.route('/<int:resume_id>', methods=['DELETE'])
 @jwt_required()
 def delete_resume(resume_id):
@@ -81,12 +132,3 @@ def delete_resume(resume_id):
     db.commit()
 
     return jsonify({"message": "Resume deleted successfully"}), 200
-
-@resume_bp.route('/<int:resume_id>', methods=['GET'])
-@jwt_required()
-def get_resume_by_id_and_user_id(resume_id):
-    user_id = get_jwt_identity()
-    resumes = get_resume_data(user_id, resume_id)
-    if len(resumes) == 0:
-        return jsonify({"error": "Resume not found or access denied"}), 404
-    return jsonify(resumes[0])

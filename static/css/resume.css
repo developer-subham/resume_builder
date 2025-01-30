@@ -1,7 +1,137 @@
-.main{
-    margin-top: 8%; 
-    margin-bottom: 4%; 
+#mainContent{
+    margin-top: 5%;
 }
-.create{
-    background-color: orange;
-}  
+
+#newResumeName{
+    max-width: 50%;
+}
+
+#resumePreview {
+    border: 2px solid #ccc;
+    padding: 20px;
+    margin: 20px 0;
+    max-width: 100%;
+}
+
+.resume-nav-tabs {
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+    margin-top: 15%;
+}
+
+.resume-nav-tabs a {
+    color: #bc7f0e;
+}
+
+.resume-nav-tabs a:hover {
+    color: #ff8c00;
+}
+
+.resume-nav-item {
+    margin-right: 20px;
+    background-color: black;
+}
+
+.resume-nav-link {
+    color: #26c92c;
+    font-weight: 600;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.resume-nav-link.active {
+    background-color: #eb6b09;
+    color: white;
+    border-color: #021529;
+}
+
+.resume-nav-link:hover {
+    background-color: #f8f9fa;
+    border-color: #ccc;
+    cursor: pointer;
+}
+
+.resume-nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(213, 58, 11, 0.5);
+}
+
+.resume-tab-content {
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-top: none;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.d-flex.justify-content-between {
+    margin-top: 20px;
+}
+
+/* Apply smaller styles to the custom-input class for all inputs and selects inside dynamic rows */
+.custom-input .form-control, .custom-input .form-select, .custom-input .form-label {
+    font-size: 0.85rem !important;
+    padding: 0.5rem !important;
+    height: 35px !important; 
+    max-width: 250px !important;
+
+}
+
+.textarea-input {
+    height: 250px;
+    max-width: 50%;
+}
+
+
+.custom-input input[type="month"], .custom-input .form-control {
+    height: 35px !important;  /* Smaller height for date picker */
+    font-size: 0.85rem !important;
+}
+
+.custom-input .form-select {
+    height: 35px !important;
+    font-size: 0.85rem !important;
+}
+
+.custom-input input[type="month"] {
+    max-width: 160px !important;
+}
+
+
+.custom-input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.profile-row {
+    padding: 1%;
+    margin-bottom: 1%;
+    background-color: #fff3de; /* Light Orange */
+}
+
+.experience-row {
+    background-color: #f0f8ff; /* Light Blue */
+}
+
+.education-row {
+    background-color: #f1f8e9; /* Light Green */
+}
+
+.project-row {
+    background-color: #fff3e0; /* Light Orange */
+}
+
+.skill-row {
+    background-color: #e8f5e9; /* Light Green */
+}
+
+.hobby-row {
+    background-color: #fbe9e7; /* Light Pink */
+}
+
+.custom-input:hover {
+    background-color: #e0e0e0; /* Light Gray on hover */
+}

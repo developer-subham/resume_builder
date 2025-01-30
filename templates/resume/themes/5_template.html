@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - {{ profile.full_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .resume-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .profile-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .profile-header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .profile-header p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+        .section-title {
+            background-color: #2980b9;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .section-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+        ul {
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        li {
+            margin: 10px 0;
+        }
+        li strong {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-container">
+        <!-- Profile Section -->
+        <div class="profile-header">
+            <h1>{{ profile.full_name }}</h1>
+            <p>{{ profile.mobile }} | {{ profile.email }}</p>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section-title">Experience</div>
+        <div class="section-content">
+            <ul>
+                {% for exp in experience %}
+                    <li>
+                        <strong>Company:</strong> {{ exp.company_name }}<br>
+                        <strong>Job Title:</strong> {{ exp.job_title }}<br>
+                        <strong>Start Date:</strong> {{ exp.start_date }}<br>
+                        <strong>End Date:</strong> {{ exp.end_date }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section-title">Education</div>
+        <div class="section-content">
+            <ul>
+                {% for edu in education %}
+                    <li>
+                        <strong>Degree:</strong> {{ edu.degree }}<br>
+                        <strong>Institution:</strong> {{ edu.institution }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section-title">Skills</div>
+        <div class="section-content">
+            <ul>
+                {% for skill in skills %}
+                    <li>{{ skill.skill }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="section-title">Projects</div>
+        <div class="section-content">
+            <ul>
+                {% for project in projects %}
+                    <li>
+                        <strong>Project Name:</strong> {{ project.project_name }}<br>
+                        <strong>Start Date:</strong> {{ project.start_date }}<br>
+                        <strong>End Date:</strong> {{ project.end_date }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Hobbies Section -->
+        <div class="section-title">Hobbies</div>
+        <div class="section-content">
+            <ul>
+                {% for hobby in hobbies %}
+                    <li>{{ hobby.hobby }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

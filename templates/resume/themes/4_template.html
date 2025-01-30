@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume - Basic</title>
+</head>
+<body>
+    <h4>{{ profile.full_name }}</h4>
+    <p> {{ profile.mobile }} | {{ profile.email }} </p>
+
+    <!-- Experience Section -->
+    <h3>Experience</h3>
+    <ul>
+        {% for exp in experience %}
+            <li>
+                <strong>Company:</strong> {{ exp.company_name }}<br>
+                <strong>Job Title:</strong> {{ exp.job_title }}<br>
+                <strong>Start Date:</strong> {{ exp.start_date }}<br>
+                <strong>End Date:</strong> {{ exp.end_date }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Education Section -->
+    <h3>Education</h3>
+    <ul>
+        {% for edu in education %}
+            <li>
+                <strong>Degree:</strong> {{ edu.degree }}<br>
+                <strong>Institution:</strong> {{ edu.institution }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Skills Section -->
+    <h3>Skills</h3>
+    <ul>
+        {% for skill in skills %}
+            <li>{{ skill.skill }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Projects Section -->
+    <h3>Projects</h3>
+    <ul>
+        {% for project in projects %}
+            <li>
+                <strong>Project Name:</strong> {{ project.project_name }}<br>
+                <strong>Start Date:</strong> {{ project.start_date }}<br>
+                <strong>End Date:</strong> {{ project.end_date }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Hobbies Section -->
+    <h3>Hobbies</h3>
+    <ul>
+        {% for hobby in hobbies %}
+            <li>{{ hobby.hobby }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

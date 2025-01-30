@@ -4,7 +4,6 @@ from flask import Blueprint, request, render_template, jsonify, redirect, url_fo
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 from db import get_db
 
 
@@ -47,23 +46,55 @@ def login():
     db = get_db()
     cursor = db.cursor()
 
-    cursor.execute('SELECT id, name, password FROM users WHERE email = ?', (email,))
+    # Fetch user details including the is_active status
+    cursor.execute('SELECT id, name, password, is_active FROM users WHERE email = ?', (email,))
     user = cursor.fetchone()
 
-    if user and check_password_hash(user[2], password):
-         # Create JWT token with user ID as identity and include `sub` claim
-        access_token = create_access_token(
-            identity=user[0], 
-            additional_claims={"sub": str(user[0])}  # Add the `sub` claim
-        )
-        
-        return jsonify({'access_token': access_token, 'user': {'name': user[1], 'email': email}}), 200
-    else:
-        return jsonify({'message': 'Invalid email or password'}), 401
+    if user:
+        user_id, name, hashed_password, is_active = user
+
+        # Check if the account is deactivated
+        if is_active == 0:
+            return jsonify({'message': 'Your account is deactivated. Please contact our help center.'}), 403
+
+        # Check if the password is correct
+        if check_password_hash(hashed_password, password):
+            # Create JWT token with user ID as identity and include `sub` claim
+            access_token = create_access_token(
+                identity=user_id, 
+                additional_claims={"sub": str(user_id)}  # Add the `sub` claim
+            )
+            return jsonify({'access_token': access_token, 'user': {'name': name, 'email': email}}), 200
+
+    # Invalid email or password
+    return jsonify({'message': 'Invalid email or password'}), 401
+
 
 @auth_bp.route('/logout', methods=['POST'])
 @jwt_required()  # Ensure JWT authentication for logout
 def logout():
-    token = request.headers.get('Authorization').split()[1] 
+    token = request.headers.get('Authorization').split()[1]
+    print(request.headers.get('Authorization'))
     db = get_db()
+    cursor = db.cursor()        
+    cursor.execute('''
+        INSERT INTO blacklist (token) VALUES (?)
+        ''', (token,))
+    db.commit()
+
     return jsonify({'message': 'Logged out successfully'}), 200
+
+@auth_bp.before_request
+def check_blacklist():
+    token = request.headers.get('Authorization')
+    if token:
+        token = token.split()[1]
+        if _check_if_token_blacklisted(token):
+            return jsonify({"message": "Token has been blacklisted. Please log in again."}), 401
+
+def _check_if_token_blacklisted(token):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM blacklist WHERE token = ?', (token,))
+    result = cursor.fetchone()
+    return result is not None

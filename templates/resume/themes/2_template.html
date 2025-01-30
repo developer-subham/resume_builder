@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Resume Templates</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .resume {
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px #0000002a;
+        }
+
+        /* Resume 1 - Diagonal Header */
+        .resume-diagonal {
+            background-color: #e0f7fa;
+            color: #006064;
+            position: relative;
+        }
+        .resume-diagonal-header {
+            background: linear-gradient(135deg, #004d40 50%, #e0f7fa 50%);
+            color: #fff;
+            padding: 40px;
+            text-align: left;
+        }
+        .resume-diagonal-header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .resume-diagonal-header p {
+            margin: 0;
+        }
+        .fab{
+            color: #05a58b;
+            font-size: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Resume 1: Diagonal Header -->
+<div class="container">
+    <div class="resume resume-diagonal">
+        <div class="resume-diagonal-header">
+            <h1>{{ profile.full_name }}</h1>
+            <p>{{ profile.email }} | {{ profile.mobile }}</p>
+            <a href="{{ 'https://' + profile.github if not profile.github.startswith('http') else profile.github }}"><i class="fab fa-github"></i></a>
+            <a href="{{ 'https://' + profile.linkedin if not profile.linkedin.startswith('http') else profile.linkedin }}"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="content" style="margin-top: 1%;">
+            <div class="section">
+                <h3>About</h3>
+                <p>{{ profile.about }}</p>
+            </div>
+            <div class="section">
+                <h3>Experience</h3>
+                <ul>
+                    {% for exp in experience %}
+                        <li>
+                            <strong>Company:</strong> {{ exp.company_name }}<br>
+                            <strong>Job Title:</strong> {{ exp.job_title }}<br>
+                            <strong>Start Date:</strong> {{ exp.start_date }}<br>
+                            <strong>End Date:</strong> {{ exp.end_date }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="section">
+                <h3>Education</h3>
+                <ul>
+                    {% for edu in education %}
+                        <li>
+                            <strong>Degree:</strong> {{ edu.degree }}<br>
+                            <strong>Institution:</strong> {{ edu.institution }}
+                        </li>
+                    {% endfor %}
+                  </ul>
+            </div>
+            <div class="section">
+                <h3>Skills</h3>
+               <ul>
+                {% for skill in skills %}
+                  <li>{{ skill.skill }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            <div class="section">
+                <h3>Projects</h3>
+                <ol>
+                    {% for project in projects %}
+                        <li>
+                          <details>
+                            <summary>{{ project.project_name }}</summary>
+                            <strong>Project Name:</strong> {{ project.project_name }}<br>
+                            <strong>Start Date:</strong> {{ project.start_date }}<br>
+                            <strong>End Date:</strong> {{ project.end_date }}
+                          </details>
+        
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+            <div class="section">
+                <h3>Hobbies</h3>
+                <ul>
+                    {% for hobby in hobbies %}
+                        <li>{{ hobby.hobby }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Resume 2: Icons for GitHub, LinkedIn -->
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - {{ profile.full_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Scoped Styles for Resume Layout */
+        .resume-container {
+            display: flex;
+            width: 80%;
+            margin: 30px auto;
+        }
+        .resume-sidebar {
+            width: 30%;
+            background-color: orange;
+            color: #000000;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .resume-sidebar h2 {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .resume-sidebar p {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .resume-content {
+            width: 70%;
+            padding-left: 30px;
+        }
+        .section-title {
+            font-size: 30px;
+            color: orange;
+        }
+        .section-content {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .section-content ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        .section-content li {
+            margin: 10px 0;
+        }
+        .section-content li strong {
+            color: #2980b9;
+        }
+
+        /* Override any global navbar or tabs styling */
+        /* Only applies to resume-related sections */
+        .resume-container .resume-sidebar,
+        .resume-container .resume-content {
+            margin-top: 0;
+        }
+
+        /* Ensure navbar and global styles are unaffected */
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-container">
+        <!-- Sidebar Section for Resume -->
+        <div class="resume-sidebar">
+            <h2>{{ profile.full_name }}</h2>
+            <p>{{ profile.mobile }}</p>
+            <p>{{ profile.email }}</p>
+        </div>
+
+        <!-- Main Content Section for Resume -->
+        <div class="resume-content">
+            <!-- Experience Section -->
+            <div class="section-title">Experience</div>
+            <div class="section-content">
+                <ul>
+                    {% for exp in experience %}
+                        <li>
+                            <strong>Company:</strong> {{ exp.company_name }}<br>
+                            <strong>Job Title:</strong> {{ exp.job_title }}<br>
+                            <strong>Start Date:</strong> {{ exp.start_date }}<br>
+                            <strong>End Date:</strong> {{ exp.end_date }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Education Section -->
+            <div class="section-title">Education</div>
+            <div class="section-content">
+                <ul>
+                    {% for edu in education %}
+                        <li>
+                            <strong>Degree:</strong> {{ edu.degree }}<br>
+                            <strong>Institution:</strong> {{ edu.institution }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="section-title">Skills</div>
+            <div class="section-content">
+                <ul>
+                    {% for skill in skills %}
+                        <li>{{ skill.skill }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="section-title">Projects</div>
+            <div class="section-content">
+                <ul>
+                    {% for project in projects %}
+                        <li>
+                            <strong>Project Name:</strong> {{ project.project_name }}<br>
+                            <strong>Start Date:</strong> {{ project.start_date }}<br>
+                            <strong>End Date:</strong> {{ project.end_date }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Hobbies Section -->
+            <div class="section-title">Hobbies</div>
+            <div class="section-content">
+                <ul>
+                    {% for hobby in hobbies %}
+                        <li>{{ hobby.hobby }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

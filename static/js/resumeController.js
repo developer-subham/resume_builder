@@ -1,3 +1,5 @@
+let controller;  // Declare the controller variable globally
+
 class ResumeController {
     constructor() {
         this.createResumeBtn = document.getElementById('createResumeBtn');
@@ -24,14 +26,13 @@ class ResumeController {
                 card.style = `
                     margin: 1%;
                     padding: 1%;
-                    background-color: #ffdc9c;
                     border-radius: 10px;
                     font-size: 18px;
                 `;
                 card.innerHTML = `
-                  <div class="card">
+                  <div class="card" style="background-color: #ffd586;">
                         <div class="card-body">
-                            <h5 class="card-title">${resume.name}</h5>
+                            <h3 class="card-title">${resume.name}</h3>
                             <p class="card-text">Created: ${new Date(resume.created_at).toLocaleDateString()}</p>
                             <div class="d-flex justify-content-end gap-2">
                                 <button class="btn btn-sm btn-warning" onclick="editResume(${resume.id})"><i class="fas fa-pen"></i> Edit</button>
@@ -119,6 +120,11 @@ class ResumeController {
     }
 }
 
+// Initialize the ResumeController globally
+document.addEventListener('DOMContentLoaded', () => {
+    controller = new ResumeController();  // Initialize the controller here
+});
+
 // Global action functions for simplicity
 function viewResume(id) {
     window.location.href = `/resume/preview/${id}`;
@@ -127,18 +133,11 @@ function viewResume(id) {
 function editResume(id) {
     window.location.href = `/resume/${id}`;
     controller.prefillResumeData(id);
-
 }
 
 function deleteResume(id) {
     const confirmed = confirm('Are you sure you want to delete this resume?');
     if (confirmed) {
-        const controller = new ResumeController();
-        controller.deleteResume(id);
+        controller.deleteResume(id);  // Call deleteResume method on the global controller instance
     }
 }
-
-
-
-// Initialize ResumeController
-document.addEventListener('DOMContentLoaded', () => new ResumeController());

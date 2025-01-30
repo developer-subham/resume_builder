@@ -35,6 +35,12 @@ class AuthController {
         if (this.registerForm) {
             this.registerForm.addEventListener('submit', this.register.bind(this));
         }
+
+        // Bind the logout button
+        this.logoutButton = document.getElementById('logoutButton');
+        if (this.logoutButton) {
+            this.logoutButton.addEventListener('click', this.handleLogout.bind(this));
+        }
     }
 
     showLoginForm() {
@@ -118,7 +124,6 @@ class AuthController {
             alert('An error occurred. Please try again later.');
         }
     }
-
     async handleLogout() {
         try {
             const token = localStorage.getItem('token');

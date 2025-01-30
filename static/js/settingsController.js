@@ -6,9 +6,16 @@ class UserSettingController {
         this.apiUrl = '/api/user';
         this.token = localStorage.getItem('token');
 
-        this.deleteBtn = document.getElementById('deleteBtn');
+        this.deactivebtn = document.getElementById('deactivebtn');
+        this.deactivebtn.addEventListener('click', this.handleDeactivateAccount.bind(this))
 
-        this.deleteBtn.addEventListener('click', this.handelDeleteAccount.bind(this))
+        this.changePasswordBtn = document.getElementById('changePassword');
+        this.savechangePasswordBtn = document.getElementById('ch-psBtn');
+        this.savechangePasswordBtn.addEventListener('click', this.handleChangePassword.bind(this))
+
+        if (this.changePasswordBtn) {
+            this.changePasswordBtn.addEventListener('click', this.enablePassword.bind(this));
+        }
 
         if (!this.token) {
             alert('Unauthorized access. Please log in.');
@@ -24,6 +31,10 @@ class UserSettingController {
             this.saveButton.addEventListener('click', this.saveProfile.bind(this));
         }
         this.fetchUserProfile();
+
+        if (!profilePic.src || profilePic.src.trim() === "") {
+            profilePic.src = DEFAULT_IMAGE;
+        }
     }
 
     async fetchUserProfile() {
@@ -104,12 +115,6 @@ class UserSettingController {
         document.querySelector('#editBtn').style.display = isEditable ? 'none' : 'inline-block';
     }
 
-    toggleNavbar() {
-        const sidebar = document.getElementById('sideNavbar');
-        sidebar.classList.toggle('collapsed');
-        sidebar.classList.toggle('expanded');
-    }
-
     showSection(sectionId) {
         const sections = document.querySelectorAll('.settings-section');
         sections.forEach((section) => {
@@ -119,52 +124,101 @@ class UserSettingController {
 
     sendMessage() {
         const message = document.getElementById('chatMessage').value;
-        alert(`Message sent: ${message}`);
+        if (message.length == 0){
+            alert('Please enter your feedback what you need!')
+        }
+        if (message) {
+            alert(`Message sent: ${message}`);
+        }
+        
     }
 
-    async handelDeleteAccount() {
-        const email = document.getElementById('emailConfirmation').value;
-    
-        if (!email) {
-            alert('Please enter your email address.');
-            return;
-        }
-    
+    async handleDeactivateAccount() {
         try {
-            const response = await fetch(`${this.apiUrl}`, {
-                method: 'DELETE',
+            // Send a DELETE request to the backend
+            const response = await fetch(`${this.apiUrl}/deactive_account`, {
+                method: 'PATCH', // Use PATCH method
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${this.token}`, // Include JWT token in the Authorization header
+                },
+            });
+    
+            if (!response.ok) {
+                // If the response is not ok, extract the error message
+                const errorResult = await response.json();
+                throw new Error(errorResult.message || 'Failed to deactivate account');
+            }
+    
+            const result = await response.json();
+            alert(result.message || 'Account deactivated successfully!');
+    
+            // Clear token and redirect the user
+            localStorage.removeItem('token');
+            window.location.href = '/'; 
+        } catch (error) {
+            console.error('Error deactivating account:', error);
+            alert(error.message || 'Failed to deactivate account. Please try again.');
+        }
+    }
+
+    toggleChangePassword(isEditable) {
+        const fields = ['old-ps', 'new-ps', 'confirm-ps'];
+        fields.forEach((fieldId) => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.disabled = !isEditable;
+            }
+        });
+    
+        // Toggle visibility of buttons
+        document.querySelector('#ch-psBtn').style.display = isEditable ? 'inline-block' : 'none';
+        document.querySelector('#changePassword').style.display = isEditable ? 'none' : 'inline-block';
+    }
+    
+    enablePassword() {
+        this.toggleChangePassword(true);
+    }
+    
+    async handleChangePassword() {
+        try {
+            const oldPassword = document.getElementById('old-ps').value;
+            const newPassword = document.getElementById('new-ps').value;
+            const confirmPassword = document.getElementById('confirm-ps').value;
+    
+            if (!oldPassword || !newPassword || !confirmPassword) {
+                alert('Please fill in all fields.');
+                return;
+            }
+    
+            if (newPassword !== confirmPassword) {
+                alert('Confirm password does not match.');
+                return;
+            }
+    
+            const response = await fetch(`${this.apiUrl}/change_password`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${this.token}`,
                 },
-                body: JSON.stringify({ email }),
+                body: JSON.stringify({ old_password: oldPassword, new_password: newPassword })
             });
     
-            // Check if the response is successful (status code 2xx)
             if (!response.ok) {
-                // If the response is not ok, we attempt to read the body to get the error message
-                const errorText = await response.text();  // Read response as text
-                try {
-                    const errorResult = JSON.parse(errorText);  // Attempt to parse it as JSON
-                    throw new Error(errorResult.message || 'Failed to delete account');
-                } catch (jsonError) {
-                    // If parsing fails, just throw the plain text response as an error
-                    throw new Error(errorText || 'Failed to delete account');
-                }
+                const errorResult = await response.json();
+                throw new Error(errorResult.message || 'Failed to change password');
             }
     
-            // If the response is OK, we can parse it as JSON
             const result = await response.json();
-    
-            alert('Account deleted successfully!');
-            localStorage.removeItem('token'); // Clear local storage
-            window.location.href = '/auth';  // Redirect to login page
+            alert(result.message || 'Your password has been changed!');
+
+            window.location.href = '/settings';
         } catch (error) {
-            console.error('Error deleting account:', error);
-            alert(error.message || 'Failed to delete account. Please try again.');
+            alert(error.message || 'Failed to change password. Please try again.');
         }
     }
-    
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {

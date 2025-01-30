@@ -1,9 +1,18 @@
 import json
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from werkzeug.security import check_password_hash, generate_password_hash
 from db import get_db
 
+import os
+
 user_bp = Blueprint('user', __name__)
+
+UPLOAD_FOLDER = 'static/images/uploads/profile'
+ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @user_bp.route('/', methods=['GET'])
 @jwt_required()
@@ -62,54 +71,108 @@ def update_user_details():
 
     return jsonify({"message": "User details updated successfully"}), 200
 
-@user_bp.route('/', methods=['DELETE'])
+@user_bp.route('/deactive_account', methods=['PATCH'])
 @jwt_required()
-def delete_user_account():
+def deactive_account():
     try:
-        # Get the current user's identity from the JWT
-        user_id = get_jwt_identity()
-        email = request.json.get('email')
+        # Get the current user's identity (user_id) from the JWT token
+        user_id = get_jwt_identity()  # This is the user ID
 
-        if not email:
-            return jsonify({"message": "Email is required"}), 400
-
-        # Validate if the email matches the user's identity
+        # Database connection and cursor
         db = get_db()
         cursor = db.cursor()
 
-        # Get user details based on email
-        user = get_user_by_email(email, cursor)
+        # Get the user's active column
+        cursor.execute("SELECT is_active FROM users WHERE id = ?", (user_id))
+        db.commit()
 
+        # Fetch user active data
+        user = cursor.fetchone()
+
+        # Check if user is not found
         if not user:
-            return jsonify({"message": "Email not found. Please create account"}), 400
-        
-        if user[0] != user_id:  # Ensure user ID matches
-            return jsonify({"message": "Email is invalid"}), 400
+            return jsonify({"message": "User not found"}), 404
 
-        # Delete associated data
-        delete_resumes_by_user_id(user_id, cursor)  # Deletes all resumes for the user
-        delete_user_by_id(user_id, cursor)         # Deletes the user record
+        # Check if account is already deactivated then you need to display error
+        is_active = user[0]
+        if is_active == 0:
+            return jsonify({"message": "Sorry your account is already deactivated so please contact our help center."})
 
-        return jsonify({"message": "Account deleted successfully"}), 200
+        # deactive user account
+        cursor.execute("UPDATE users SET is_active = 0 WHERE id = ?", (user_id,))
+        db.commit()
+        # Return success response
+        return jsonify({"message": "Account deactivated successfully"}), 200
 
     except Exception as e:
-        return jsonify({"message": f"Error deleting account: {str(e)}"}), 500
+        return jsonify({"message": f"Error deactive account: {str(e)}"}), 500
 
+
+@user_bp.route('/change_password', methods=['PATCH'])
+@jwt_required()
+def change_password():
+    try:
+        user_id = get_jwt_identity()
+        data = request.get_json()
+
+        old_password = data.get('old_password')
+        new_password = data.get('new_password')
+        confirm_password = data.get('confirm_password')
+
+        db = get_db()
+        cursor = db.cursor()
+
+        # Get the current hashed password from the database
+        cursor.execute("SELECT password FROM users WHERE id = ?", (user_id,))
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+
+        hashed_password = user[0]  # Extract the stored hashed password
+
+        # Verify old password
+        if not check_password_hash(hashed_password, old_password):
+            return jsonify({'message': 'Incorrect old password'}), 401
+
+        # Hash new password
+        new_hashed_password = generate_password_hash(new_password)
+
+        # Update password in database
+        cursor.execute("UPDATE users SET password = ? WHERE id = ?", (new_hashed_password, user_id))
+        db.commit()
+
+        return jsonify({'message': 'Password changed successfully'}), 200
+
+    except Exception as e:
+        return jsonify({'message': f'Error changing password: {str(e)}'}), 500
+
+
+@user_bp.route('/update_profile_picture', methods=['PATCH'])
+@jwt_required()
+def update_profile_picture():
+    user_id = get_jwt_identity()
     
-def get_user_by_email(email, cursor):
-    # Query the database to fetch user by email
-    query = "SELECT * FROM users WHERE email = ?"
-    cursor.execute(query, (email,))
-    return cursor.fetchone()
+    if 'profile_image' not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
 
-def delete_user_by_id(user_id, cursor):
-    # Delete user by ID
-    query = "DELETE FROM users WHERE id = ?"
-    cursor.execute(query, (user_id,))
-    cursor.connection.commit()
+    file = request.files['profile_image']
 
-def delete_resumes_by_user_id(user_id, cursor):
-    # Delete resumes associated with the user
-    query = "DELETE FROM resumes WHERE user_id = ?"
-    cursor.execute(query, (user_id,))
-    cursor.connection.commit()
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(f"user_{user_id}_" + file.filename)  # Rename file
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)  # Save file
+
+        # Save file path to database
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("UPDATE users SET profile_image = %s WHERE id = %s", (filepath, user_id))
+        db.commit()
+
+        return jsonify({"message": "Profile image updated successfully!", "profile_image_url": filepath}), 200
+    else:
+        return jsonify({"error": "Invalid file format"}), 400
+
