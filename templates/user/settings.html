@@ -15,15 +15,19 @@
             <img src="/static/images/logo.png" id="nav_img" alt="Logo">
         </div>
         <div class="nav-item" onclick="new UserSettingController().showSection('general-settings')">
-            <i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-gear fa-fw"></i>
             <span class="nav-text">General</span>
         </div>
+        <div class="nav-item" onclick="new UserSettingController().showSection('change-password-settings')">
+            <i class="fa-classic fa-solid fa-key fa-fw"></i>
+            <span class="nav-text">ChangePassword</span>
+        </div>
         <div class="nav-item" onclick="new UserSettingController().showSection('data-control-settings')">
-            <i class="fa-solid fa-database"></i>
+            <i class="fa-solid fa-database fa-fw"></i>
             <span class="nav-text">Data Control</span>
         </div>
         <div class="nav-item" onclick="new UserSettingController().showSection('help-center-settings')">
-            <i class="fa-solid fa-circle-info"></i>
+            <i class="fa-solid fa-circle-info fa-fw"></i>
             <span class="nav-text">Help Center</span>
         </div>
     </div>
@@ -80,8 +84,14 @@
                     </div>
                 </form>
             </div>
-        
+        </div>
+
+        <!-- Change Password -->
+        <div id="change-password-settings" class="settings-section">
+            <div class="form-container">
             <div class="changePassword">
+                <h2 class="modal-header">Change Password</h2>
+                <hr>
                 <button id="changePassword" class="btn btn-dark">Change Password</button>
                 <div class="form-container" >
                     <form id="editProfileForm">
@@ -104,7 +114,7 @@
                 </div>
             </div>
         </div>
-
+        </div>
         <!-- Data Control -->
         <div id="data-control-settings" class="settings-section" style="display: none;">
             <h4>Data Control</h4>

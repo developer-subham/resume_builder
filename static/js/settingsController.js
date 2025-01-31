@@ -3,14 +3,14 @@ class UserSettingController {
         this.profileForm = document.getElementById('editProfileForm');
         this.saveButton = document.getElementById('saveBtn');
         this.editButton = document.getElementById('editBtn');
+        this.deactivebtn = document.getElementById('deactivebtn');
+        this.changePasswordBtn = document.getElementById('changePassword');
+        this.savechangePasswordBtn = document.getElementById('ch-psBtn');
+        this.uploadImg = document.getElementById('')
         this.apiUrl = '/api/user';
         this.token = localStorage.getItem('token');
 
-        this.deactivebtn = document.getElementById('deactivebtn');
         this.deactivebtn.addEventListener('click', this.handleDeactivateAccount.bind(this))
-
-        this.changePasswordBtn = document.getElementById('changePassword');
-        this.savechangePasswordBtn = document.getElementById('ch-psBtn');
         this.savechangePasswordBtn.addEventListener('click', this.handleChangePassword.bind(this))
 
         if (this.changePasswordBtn) {

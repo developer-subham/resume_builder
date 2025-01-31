@@ -175,4 +175,3 @@ def update_profile_picture():
         return jsonify({"message": "Profile image updated successfully!", "profile_image_url": filepath}), 200
     else:
         return jsonify({"error": "Invalid file format"}), 400
-
