@@ -12,23 +12,18 @@
             flex-direction: column;
         }
         footer {
-            background-color: #ffbe45;
+            background-color: #dae3f1;
             bottom: 0;
             left: 0;
             width: 100%;
             padding: 1%;
         }
-        .footer-icons {
-            margin-bottom: 20px;
+        .bi{
+            font-size: 20px;
+            margin: 2px;
         }
-        .footer-icons i {
-            font-size: 33px;
-            margin-top: 15px;
-            margin-right: 15px;
-            color: #333;
-        }
-        .footer-icons i:hover {
-            color: orangered;
+        .bi:hover{
+            color: #8529ff;
         }
         .footer-logo img {
             width: 150px;
@@ -42,26 +37,25 @@
 </head>
 <body>
 
-<!-- Footer Section -->
-<footer>
-    <div class="container-fluid">
-        <div class="col-md-6">
-            <div class="footer-logo">
-                <img src="/static/images/logo.png" alt="Company Logo">
-            </div>
-            <div class="footer-icons">
-                <a href="#" class="text-decoration-none"><i class="fab fa-github"></i></a>
-                <a href="#" class="text-decoration-none"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-decoration-none"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="text-decoration-none"><i class="fab fa-instagram"></i></a>
-            </div>
+<footer class="text-center text-dark py-3">
+    <div class="container">
+        <p class="mb-1">&copy; 2025 ResumeBuilder. All Rights Reserved.</p>
+        <div class="text-center mt-4">
+            <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="text-dark"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="text-dark"><i class="bi bi-instagram"></i></a>
         </div>
-
-        <p class="mb-4 col-md-6">Create and manage professional resumes with ease. Our Resume Builder helps you to design a compelling resume in minutes, making your job search simpler and more efficient. Get started today!</p>
-        
-        <!-- Social Media Icons -->
+        <p class="small">
+            <a href="#" class="text-dark text-decoration-none">Privacy Policy</a>
+            <a href="#" class="text-dark text-decoration-none">Terms of Service</a>
+        </p>
     </div>
 </footer>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

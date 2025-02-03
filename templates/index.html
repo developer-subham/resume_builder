@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 
   </head>
-  <body style="background-color: #fff5e2;">
+  <body style="background-color: #ffffff;">
     <!-- Header -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -66,59 +66,65 @@
         <a href="/internal_server_error" style="color: black;"><button class="btn1">Find out how</button></a>
       </div>
       <div class="col-md-6">
-        <img src="https://i.pinimg.com/originals/e1/a7/81/e1a781c2cfc49e4f02cc72293e853b05.gif" id="img5">
+        <img src="https://i.pinimg.com/originals/5f/91/d4/5f91d446635bd22eb745e85d51720307.gif" id="img5">
       </div>
     </div>
   </div>
+  
+  <section class="container my-5 feature" id="features" data-aos="fade-up">
+    <h2 class="text-center fw-bold">✨ Key Features</h2>
+    <div class="row align-items-center mt-4">
+        <div class="col-md-6">
+            <img src="https://i.pinimg.com/originals/cf/94/7b/cf947b46283c10c47e3d5d945afb7053.gif" alt="Resume Features" class="feature-img">
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+              <p style="margin-top: 8%; font-size: 18px;">✅ Easy Editing & Customization – Quickly update and personalize your resume with an intuitive editor.<br>
 
-  <!-- Features section  -->
-  <section id="features" data-aos="fade-up">
-    <div class="container text-center">
-        <p class="mb-4 fea-heading" style="font-size: 40px;">Features</p>
-        <div class="row">
-            <div class="col-md-4">
-                    <i class="fas fa-pencil-alt feature-icon"></i>
-                    <h3>Easy Editing</h3>
-                    <p>Create and customize your resume in minutes.</p>
-            </div>
-            <div class="col-md-4">
-                    <i class="fas fa-file-alt feature-icon"></i>
-                    <h3>Professional Templates</h3>
-                    <p>Choose from a variety of modern templates.</p>
-            </div>
-            <div class="col-md-4">
-                    <i class="fas fa-cloud-upload-alt feature-icon"></i>
-                    <h3>Secure Storage</h3>
-                    <p>Save and access your resumes securely anytime.</p>
+                ✅ Professional Templates – Choose from a variety of modern, ATS-friendly resume designs.<br>
+                
+                ✅ Auto-Save & Cloud Storage – Your resume is always saved and accessible anytime, anywhere.<br>
+                
+                ✅ One-Click PDF Download – Instantly download your polished resume in high-quality PDF format.<br>
+                
+                ✅ AI-Powered Suggestions – Get smart recommendations for job descriptions and skills.<br>
+                
+                ✅ Mobile-Friendly – Create and edit your resume effortlessly on any device.<br>
+                
+                Craft a standout resume in minutes and land your dream job! 🚀</p>
             </div>
         </div>
     </div>
 </section>
 
-    <div class="container3 container" data-aos="fade-up">
-      <div class="row">
-        <div class="col-md-3 text-center">
-          <i class="fa-regular fa-file review-icon"></i>
-          <h2 style="margin-top: 8%;">12M</h2>
-          <h4 class="txt3">Resume created</h4>
-        </div>
-        <div class="col-md-3 text-center">
-          <i class="fa-solid fa-chart-line review-icon"></i>
-          <h2>65M+</h2>
-          <h4 class="txt3">Resumes reviewed</h4>
-        </div>
-        <div class="col-md-3 text-center">
-          <i class="fa-solid fa-briefcase review-icon"></i>
-          <h2>10M</h2>
-          <h4 style="color: #A49797;">Jobs</h4>
-        </div>
-        <div class="col-md-3 text-center">
-          <i class="fa-solid fa-users review-icon"></i>
-          <h2>11.2M</h2>
-          <h4 class="txt3">Users worldwide</h4>
-        </div>
+<!-- Steps Section -->
+<section class="container my-5" style="margin-bottom: 5%;">
+  <h2 class="text-center fw-bold">📌 Steps to Create Your Resume</h2>
+  <div class="row mt-4">
+      <div class="col-md-4">
+          <div class="step-card">
+              <h3 class="text-primary">1️⃣</h3>
+              <h5>Sign Up / Login</h5>
+              <p>Create an account or log in to get started.</p>
+          </div>
       </div>
-    </div> 
+      <div class="col-md-4" style="height: 20px;">
+          <div class="step-card">
+              <h3 class="text-primary">2️⃣</h3>
+              <h5>Fill in Details</h5>
+              <p>Enter your personal, educational, and experience details.</p>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="step-card">
+              <h3 class="text-primary">3️⃣</h3>
+              <h5>Download & Apply</h5>
+              <p>Download your resume and start applying for jobs.</p>
+          </div>
+      </div>
+  </div>
+</section>
+
     
     {% include 'common/footer.html' %}
   </body>

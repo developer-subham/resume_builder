@@ -30,13 +30,13 @@ class ResumeController {
                     font-size: 18px;
                 `;
                 card.innerHTML = `
-                  <div class="card" style="background-color: #ffd586;">
+                  <div class="card" style="background-color: #dae3f1; color: black; border: none;">
                         <div class="card-body">
                             <h3 class="card-title">${resume.name}</h3>
                             <p class="card-text">Created: ${new Date(resume.created_at).toLocaleDateString()}</p>
                             <div class="d-flex justify-content-end gap-2">
                                 <button class="btn btn-sm btn-warning" onclick="editResume(${resume.id})"><i class="fas fa-pen"></i> Edit</button>
-                                <button class="btn btn-sm btn-success" onclick="viewResume(${resume.id})"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn btn-sm" style="background-color: #8529ff; color: #fff;" onclick="viewResume(${resume.id})"><i class="fas fa-eye"></i> View</button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteResume(${resume.id})"><i class="fas fa-trash"></i> Delete</button>
                             </div>
                         </div>

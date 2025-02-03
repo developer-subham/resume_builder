@@ -1,7 +1,7 @@
     /* Custom Styles */
     body {
         display: flex;
-        background-color: #ffeece;
+        background-color: #F2F9FF;
     }
     #nav_img {
         height: 60px;
@@ -9,20 +9,16 @@
     }
     .sidebar {
         transition: width 0.3s;
-        background-color: #ffbe45;
+        background-color: #cee2ff;
         color: #000000;
         height: 100vh;
         overflow: hidden;
         font-size: 16px;
         position: fixed;
-    }
-
-    .sidebar.expanded {
-        width: 250px;
-    }
-
-    .sidebar.collapsed {
-        width: 60px;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 240px;
     }
 
     .sidebar .nav-item {
@@ -65,21 +61,37 @@
 
     #general-settings{
         padding: 3%;
-        background-color: #ffa600;
-        margin-top: 5%;
+        background-color: #e2eeff;
+        margin-top: 1%;
         border-radius: 20px;
         box-shadow: 20px 10px 30px #88888888;
     }
     #data-control-settings{
         padding: 3%;
-        background-color: #ffa600;
+        background-color: #e2eeff;
         margin-top: 10%;
         border-radius: 20px;
         box-shadow: 20px 10px 30px #88888888;
     }
-    .form-container{
-        padding: 1%;
-        background-color: #ffb224;
-        border-radius: 10px;
-        margin-bottom: 1%;
+
+    .profile-container {
+        text-align: center;
+    }
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+    }
+    .default-icon {
+        font-size: 80px;
+        color: #aaa;
+    }
+    #change-password-settings{
+        padding: 3%;
+        background-color: #e2eeff;
+        margin-top: 1%;
+        border-radius: 20px;
+        box-shadow: 20px 10px 30px #88888888;
     }

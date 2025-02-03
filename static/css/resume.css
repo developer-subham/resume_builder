@@ -24,7 +24,7 @@
 }
 
 .resume-nav-tabs a:hover {
-    color: #ff8c00;
+    color: #8529ff;
 }
 
 .resume-nav-item {
@@ -44,7 +44,7 @@
 .resume-nav-link.active {
     background-color: #eb6b09;
     color: white;
-    border-color: #021529;
+    border-color: #8529ff;
 }
 
 .resume-nav-link:hover {
@@ -109,11 +109,11 @@
 .profile-row {
     padding: 1%;
     margin-bottom: 1%;
-    background-color: #fff3de; /* Light Orange */
+    background-color: #dae3f1; 
 }
 
 .experience-row {
-    background-color: #f0f8ff; /* Light Blue */
+    background-color: #dae3f1; 
 }
 
 .education-row {

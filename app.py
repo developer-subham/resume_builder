@@ -56,5 +56,10 @@ def settings():
 def page_not_found(e):
     return render_template('errors/404.html'), 404
 
+# Admin dashboard
+@app.route('/admin_dashboard', methods=['GET'])
+def admin_dashboard():
+    return render_template('admin/dashboard.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

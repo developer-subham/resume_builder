@@ -34,8 +34,8 @@
     top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: black;
-    background-color: orange;
+    color: #ffffff;
+    background-color: #8529ff;
     border: none;
     border-radius: 29px;
     font-size: 18px;
@@ -70,7 +70,8 @@
     border: none;
     border-radius: 30px;
     padding: 10px 20px;
-    background-color: orange;
+    background-color: #8529ff;
+    color: #fff;
     font-size: 16px;
     margin-top: 1%;
     height: 50px;
@@ -96,21 +97,27 @@
 h2, h4 {
     margin: 0.5rem 0;
 }
-#features {
-    background-color: rgb(255, 166, 0);
-    border-radius: 20px;
-    margin: 2% auto;
+.feature{
+    background-color: #F4F6FA;
+    color: #000000;
+    padding: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
     width: 90%;
-    padding: 3%;
+    border-radius: 20px;
+    height: 400px;
+}
+.feature-img{
+    height: 90%;
+}
+.step-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     text-align: center;
-}
-.feature-icon {
-    font-size: 3rem;
-    color: #057831;
-    transition: color 0.3s ease-in-out;
-}
-.feature-icon:hover {
-    color: #059862;
+    background-color: #8529ff;
+    color: #fff;
 }
 .fea-heading::after {
     content: "";
@@ -127,7 +134,7 @@ h2, h4 {
 }
 .navbar {
     margin-bottom: 0;
-    background-color: #ffbe45;
+    background-color: #dae3f1;
     z-index: 1;
     border: 0;
     font-size: 20px;
@@ -157,7 +164,7 @@ h2, h4 {
 }
 .login-button {
     padding: 10px 20px;
-    background-color: black;
+    background-color: #8529ff;
     color: #fff;
     font-family: Arial, sans-serif;
     font-size: 16px;

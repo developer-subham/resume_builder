@@ -6,11 +6,7 @@
     object-fit: cover; /* Ensure the image maintains aspect ratio and fills the container */
 }
 .btn {
-    background-color: #000000;
+    background-color: #8529ff;
     font-size: 19px;
     color: #ffffff;
-}
-.btn:hover {
-    background-color: #ffba3a;
-    color: #fff;
 }

@@ -9,130 +9,120 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/settings.css') }}">
 </head>
 <body>
-    <!-- Side Navbar -->
-    <div id="sideNavbar d-flex flex-column p-3" class="sidebar expanded">
-        <div class="nav-item">
-            <img src="/static/images/logo.png" id="nav_img" alt="Logo">
-        </div>
-        <div class="nav-item" onclick="new UserSettingController().showSection('general-settings')">
-            <i class="fa-solid fa-gear fa-fw"></i>
-            <span class="nav-text">General</span>
-        </div>
-        <div class="nav-item" onclick="new UserSettingController().showSection('change-password-settings')">
-            <i class="fa-classic fa-solid fa-key fa-fw"></i>
-            <span class="nav-text">ChangePassword</span>
-        </div>
-        <div class="nav-item" onclick="new UserSettingController().showSection('data-control-settings')">
-            <i class="fa-solid fa-database fa-fw"></i>
-            <span class="nav-text">Data Control</span>
-        </div>
-        <div class="nav-item" onclick="new UserSettingController().showSection('help-center-settings')">
-            <i class="fa-solid fa-circle-info fa-fw"></i>
-            <span class="nav-text">Help Center</span>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="container mt-3 mr-5">
-        <!-- General Settings -->
-        <div id="general-settings" class="settings-section">
-            <h2 class="modal-header">General Settings</h2>
-            <hr>
-            <div class="form-container">
-                <div class="card p-4 shadow-sm">
-                    <h4 class="mb-3">Update Profile Picture</h4>
-                    <div class="text-center">
-                        <!-- Profile Picture Preview -->
-                        <img id="profilePic" src="" class="img-thumbnail rounded-circle" width="150" height="150">
+    <div class="container mt-3">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <!-- Sidebar Navigation -->
+                <div id="sideNavbar" class="sidebar p-3">
+                    <div class="nav-item">
+                        <img src="/static/images/logo.png" id="nav_img" alt="Logo" class="img-fluid">
                     </div>
-            
-                    <div class="mt-3">
-                        <input type="file" id="profilePicInput" class="form-control" accept="image/*">
+                    <div class="nav-item" onclick="new SectionController().showSection('general-settings')">
+                        <i class="fa-solid fa-user fa-fw"></i>
+                        <span class="nav-text">Profile</span>
                     </div>
-            
-                    <div class="d-grid gap-2 mt-3">
-                        <button class="btn btn-success" id="upload-btn">Upload</button>
+                    <div class="nav-item" onclick="new SectionController().showSection('change-password-settings')">
+                        <i class="fa-solid fa-key fa-fw"></i>
+                        <span class="nav-text">Change Password</span>
+                    </div>
+                    <div class="nav-item" onclick="new SectionController().showSection('data-control-settings')">
+                        <i class="fa-solid fa-database fa-fw"></i>
+                        <span class="nav-text">Data Control</span>
+                    </div>
+                    <div class="nav-item" onclick="new SectionController().showSection('help-center-settings')">
+                        <i class="fa-solid fa-circle-info fa-fw"></i>
+                        <span class="nav-text">Help Center</span>
                     </div>
                 </div>
             </div>
-
-
-            <button id="editBtn" class="btn btn-dark">Edit Profile</button>
-
-            <div class="form-container">
-                <form id="editProfileForm">
-                    <div class="col-md-12">
-                        <label for="ch-fullname" class="label-control">Full Name</label>
-                        <input type="text" id="ch-fullname" name="name" class="form-control" disabled>
+    
+            <!-- Content Area -->
+            <div class="col-md-8 offset-md-3">
+                <!-- General Settings -->
+                <div id="general-settings" class="settings-section">
+                    <h2 class="modal-header">Profile Settings</h2>
+                    <hr>
+                    <button id="editBtn" class="btn btn-primary">Edit Profile</button>
+                    <div class="form-group text-center">
+                        <div id="profileImageDefaultIconWrapper" class="rounded-circle d-flex justify-content-center align-items-center"
+                             style="width: 120px; height: 120px; margin: auto;">
+                            <img id="profileImagePreview" class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                        <button type="button" id="uploadImageButton" class="btn btn-outline-secondary mt-2" disabled>Change Profile Picture</button>
                     </div>
-                    <div class="col-md-12">
-                        <label for="ch-email" class="label-control">Email</label>
-                        <input type="email" id="ch-email" name="email" class="form-control" disabled>
+                    <div class="mt-3">
+                        <label for="ch-fullname" class="form-label">Full Name</label>
+                        <input type="text" id="ch-fullname" class="form-control" disabled>
                     </div>
-                    <div class="col-md-12">
+                    <div class="mt-3">
+                        <label for="ch-email" class="form-label">Email</label>
+                        <input type="email" id="ch-email" class="form-control" disabled>
+                    </div>
+                    <div class="mt-3">
                         <label for="userGender" class="form-label">Gender</label>
-                        <select class="form-control" id="userGender" name="gender" disabled>
+                        <select class="form-control" id="userGender" disabled>
                             <option value="" disabled>Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
                         </select>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" onclick="new UserSettingController().toggleEdit(false)" style="margin-right: 1%; margin-top: 1%;">Cancel</button>
-                        <button type="button" id="saveBtn" class="btn btn-success" style="display: none; margin-top: 1%;">Save Changes</button>
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-danger" onclick="new UserSettingController().toggleEdit(false)">Cancel</button>
+                        <button type="button" id="saveBtn" class="btn btn-success" style="display: none;">Save Changes</button>
                     </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Change Password -->
-        <div id="change-password-settings" class="settings-section">
-            <div class="form-container">
-            <div class="changePassword">
-                <h2 class="modal-header">Change Password</h2>
-                <hr>
-                <button id="changePassword" class="btn btn-dark">Change Password</button>
-                <div class="form-container" >
-                    <form id="editProfileForm">
-                        <div class="col-md-12">
-                            <label for="old-ps" class="label-control">Old Password</label>
-                            <input type="password" placeholder="Enter old password" id="old-ps" name="current-password" class="form-control" disabled>
+                </div>
+    
+                <!-- Change Password -->
+                <div id="change-password-settings" class="settings-section" style="display: none;">
+                    <h2 class="modal-header">Change Password</h2>
+                    <hr>
+                    <button id="changePassword" class="btn btn-primary">Change Password</button>
+                    <form id="editProfileForm" class="mt-3">
+                        <div class="mt-2">
+                            <label for="old-ps" class="form-label">Old Password</label>
+                            <input type="password" id="old-ps" class="form-control" placeholder="Enter old password" disabled>
                         </div>
-                        <div class="col-md-12">
-                            <label for="new-ps" class="label-control">New Password</label>
-                            <input type="password" id="new-ps" placeholder="Enter new password" name="new-password" class="form-control" disabled>
+                        <div class="mt-2">
+                            <label for="new-ps" class="form-label">New Password</label>
+                            <input type="password" id="new-ps" class="form-control" placeholder="Enter new password" disabled>
                         </div>
-                        <div class="col-md-12">
-                            <label for="confirm-ps" class="label-control">Confirm Password</label>
-                            <input type="password" id="confirm-ps" placeholder="Enter confirm password" name="confirm-password" class="form-control" disabled>
+                        <div class="mt-2">
+                            <label for="confirm-ps" class="form-label">Confirm Password</label>
+                            <input type="password" id="confirm-ps" class="form-control" placeholder="Enter confirm password" disabled>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" id="ch-psBtn" class="btn btn-success" style="display: none; margin-top: 1%;">Save Changes</button>
+                        <div class="modal-footer mt-3">
+                            <button type="button" id="ch-psBtn" class="btn btn-success" style="display: none;">Save Changes</button>
                         </div>
                     </form>
                 </div>
+    
+                <!-- Data Control -->
+                <div id="data-control-settings" class="settings-section" style="display: none;">
+                    <h4>Data Control</h4>
+                    <p>Deactivating your account means you won't be able to log in or use the website.</p>
+                    <button class="btn btn-danger" id="deactivebtn">Deactivate Account</button>
+                </div>
+    
+                <!-- Help Center -->
+                <div id="help-center-settings" class="settings-section" style="display: none;">
+                    <h4>Help Center</h4>
+                    <textarea class="form-control" id="chatMessage" rows="3" placeholder="Write your feedback here."></textarea>
+                    <button class="btn btn-primary mt-2" onclick="new UserSettingController().sendMessage()">Send</button>
+                </div>
             </div>
-        </div>
-        </div>
-        <!-- Data Control -->
-        <div id="data-control-settings" class="settings-section" style="display: none;">
-            <h4>Data Control</h4>
-            <div class="container">
-                <p>Deactive account means, it is like delete account. If your account is deactiveted then you can't work or login in this website.</p>
-                <button class="btn btn-danger" id="deactivebtn">Deactive Account</button>
-            </div>
-        </div>
-
-        <!-- Help Center -->
-        <div id="help-center-settings" class="settings-section" style="display: none;">
-            <h4>Help Center</h4>
-            <textarea class="form-control" id="chatMessage" rows="3" placeholder="Write your feedback here."></textarea>
-            <button class="btn btn-primary mt-2" onclick="new UserSettingController().sendMessage()">Send</button>
         </div>
     </div>
+    
+    
+    
     <!-- Bootstrap JS and Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/settingsController.js"></script>
+    <script src="static/js/user/sectionController.js"></script>
+    <script src="static/js/user/profileController.js"></script>
+    <script src="static/js/user/changePasswordController.js"></script>
+    <script src="static/js/user/deactiveAccountController.js"></script>
 </body>
 </html>

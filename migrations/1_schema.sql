@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Added the 'is_active' column to the 'users' table
 -- ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1; 
 
--- ALTER TABLE users ADD COLUMN profile_image VARCHAR(255) DEFAULT 'static/uploads/profile_pictures/default.png';
+-- ALTER TABLE users ADD COLUMN profile_image VARCHAR(255);
 
 
 -- Create the 'blacklist' table
