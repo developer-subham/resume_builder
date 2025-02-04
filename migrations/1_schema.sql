@@ -1,3 +1,16 @@
+
+CREATE TABLE IF NOT EXISTS user_roles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL,
+    description TEXT
+);
+
+
+INSERT OR IGNORE INTO user_roles (name, description) VALUES
+('user', 'Regular user with basic access'),
+('admin', 'Administrator with full access'),
+('customer_support', 'Customer Support with limited admin access');
+
 -- Create the 'users' table
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,6 +25,8 @@ CREATE TABLE IF NOT EXISTS users (
 -- ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1; 
 
 -- ALTER TABLE users ADD COLUMN profile_image VARCHAR(255);
+
+-- ALTER TABLE users ADD COLUMN role_id INTEGER NOT NULL DEFAULT 1;
 
 
 -- Create the 'blacklist' table

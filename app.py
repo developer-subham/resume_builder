@@ -61,5 +61,10 @@ def page_not_found(e):
 def admin_dashboard():
     return render_template('admin/dashboard.html')
 
+# Support dashboard
+@app.route('/support_dashboard', methods=['GET'])
+def support_dashboard():
+    return render_template('support/dashboard.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
