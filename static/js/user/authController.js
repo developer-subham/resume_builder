@@ -1,11 +1,27 @@
+import { RestAPIUtil, NonAuthenticatedRestAPIUtil } from '../common/restAPIUtil.js';
 class AuthController {
     constructor() {
         this.loginFormSection = document.getElementById('loginForm');
         this.registerFormSection = document.getElementById('registerForm');
 
-        // Initially display only the login form and set the title
-        this.showLoginForm();
+        this.logoutBtn = document.getElementById('logoutButton');
 
+        if(this.loginFormSection){
+            this.showLoginForm();
+            this.loginForm = this.loginFormSection.querySelector('form');
+            if (this.loginForm) {
+                this.loginForm.addEventListener('submit', this.login.bind(this));
+            }
+        }
+
+        if(this.registerFormSection){
+            this.registerForm = this.registerFormSection.querySelector('form');
+            if (this.registerForm) {
+                this.registerForm.addEventListener('submit', this.register.bind(this));
+            }
+    
+        }
+ 
         // Bind event listeners for form navigation
         const registerLink = document.querySelector("a[href='#registerForm']");
         const loginLink = document.querySelector("a[href='#loginForm']");
@@ -24,22 +40,10 @@ class AuthController {
             });
         }
 
-        // Bind event listeners for form submissions
-        this.loginForm = this.loginFormSection.querySelector('form');
-        this.registerForm = this.registerFormSection.querySelector('form');
-
-        if (this.loginForm) {
-            this.loginForm.addEventListener('submit', this.login.bind(this));
-        }
-
-        if (this.registerForm) {
-            this.registerForm.addEventListener('submit', this.register.bind(this));
-        }
-
+       
         // Bind the logout button
-        this.logoutButton = document.getElementById('logoutButton');
-        if (this.logoutButton) {
-            this.logoutButton.addEventListener('click', this.handleLogout.bind(this));
+        if (this.logoutBtn) {
+            this.logoutBtn.addEventListener('click', this.handleLogout.bind(this));
         }
     }
 
@@ -67,24 +71,18 @@ class AuthController {
 
 
         try {
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+            const response = await NonAuthenticatedRestAPIUtil.post('/auth/register', {
                     name,
                     email,
                     password,
                     gender
-                })
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                alert('Registration successful!');
-                window.location.href = '/user/resumes/';
+                alert('Registration successful! You need to login now');
+                window.location.href = '/auth';
             } else {
                 alert(data.message || 'Registration failed.');
             }
@@ -101,24 +99,26 @@ class AuthController {
         const password = this.loginForm.querySelector('#password').value;
 
         try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
+            const data = await NonAuthenticatedRestAPIUtil.post('/auth/login', { email, password });
 
-            const data = await response.json();
-
-            if (response.ok) {
+            if (data) {
                 localStorage.setItem('token', data.access_token);
                 localStorage.setItem('name', data.user.name);
-                alert('Login successful! Redirecting to dashboard.');
-                window.location.href = '/user/resumes/';
+                switch (data.user.role) {
+                    case "admin":
+                        window.location.href = "/admin_dashboard";
+                        break;
+                    case "customer_support":
+                        window.location.href = "/support_dashboard";
+                        break;
+                    case "user":
+                    default:
+                        window.location.href = "/user/resumes/";
+                }
             } else {
-                alert(data.message || 'Login failed.');
-            }
+                document.getElementById('loginError').textContent = `Login failed with status: ${response.status}`;
+                document.getElementById('loginError').style.display = 'block';
+            }   
         } catch (error) {
             console.error('Login error:', error);
             alert('An error occurred. Please try again later.');
@@ -132,23 +132,20 @@ class AuthController {
                 return;
             }
 
-            const response = await fetch('/api/auth/logout', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,  // Send the JWT token as a Bearer token in the Authorization header
-                    'Content-Type': 'application/json'
-                }
-            });
+            const data = await RestAPIUtil.post('auth/logout', {}, true);
 
-            if (response.ok) {
-                localStorage.removeItem('token');  // Remove the token from localStorage
-                window.location.href = '/';  // Redirect to login page
+            if (data) {
+                localStorage.removeItem('token');
+                window.location.href = '/';
             } else {
-                alert('Error logging out');
-                window.location.href = '/'; 
+                alert(`Error logging out`);
+                console.error('Logout failed');
+                window.location.href = '/';
             }
         } catch (error) {
+            alert('Error logging out');
             console.error('Logout error:', error);
+            window.location.href = '/';
         }
     }
 }

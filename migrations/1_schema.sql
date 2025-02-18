@@ -18,15 +18,13 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     gender TEXT NOT NULL,
-    is_active INTEGER DEFAULT 1
+    is_active INTEGER DEFAULT 1,
+    profile_image VARCHAR(255),
+    role_id INTEGER NULL DEFAULT 1,
+    salt TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
--- Added the 'is_active' column to the 'users' table
--- ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1; 
-
--- ALTER TABLE users ADD COLUMN profile_image VARCHAR(255);
-
--- ALTER TABLE users ADD COLUMN role_id INTEGER NOT NULL DEFAULT 1;
 
 
 -- Create the 'blacklist' table

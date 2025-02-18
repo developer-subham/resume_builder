@@ -85,7 +85,7 @@
             <ul class="dropdown-menu">
               <li><a href="/settings" class="dropdown-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a href="#" id="logoutButton" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+              <li><a  href="#"  id="logoutButton" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
           </li>
         </ul>
@@ -93,12 +93,12 @@
     </div>
   </nav>
   
+  <script type="module" src="/static/js/user/authController.js"></script>
   <script>
     const name = localStorage.getItem('name');    
     if (name) {
         document.getElementById('userName').textContent = name;
     }
   </script>
-<script src="/static/js/authController.js"></script>
 </body>
 </html>

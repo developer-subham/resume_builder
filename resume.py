@@ -17,6 +17,7 @@ def create_resume_for_user():
     cursor.execute("INSERT INTO resumes (user_id, name) VALUES (?, ?)", 
                    (user_id, name))
     db.commit()
+    db.close()
     resume_id = cursor.lastrowid
     return jsonify({"id": resume_id}), 201
 
@@ -104,6 +105,7 @@ def save_section(resume_id, section):
     cursor = db.cursor()
     cursor.execute(f"UPDATE resumes SET {section} = ? WHERE user_id = ? and id = ?", (json.dumps(data), user_id, resume_id))
     db.commit()
+    db.close()
 
     if cursor.rowcount == 0:
         return jsonify({"error": "Resume not found"}), 404
@@ -130,5 +132,6 @@ def delete_resume(resume_id):
     # Delete the resume
     cursor.execute("DELETE FROM resumes WHERE id = ? AND user_id = ?", (resume_id, user_id))
     db.commit()
+    db.close()
 
     return jsonify({"message": "Resume deleted successfully"}), 200

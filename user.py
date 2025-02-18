@@ -65,8 +65,10 @@ def update_user_details():
     query += " WHERE id = ?"
     params.append(user_id)
 
+
     cursor.execute(query, tuple(params))
     db.commit()
+    db.close()
 
     return jsonify({"message": "User details updated successfully"}), 200
 
@@ -88,6 +90,7 @@ def deactive_account():
 
         cursor.execute("UPDATE users SET is_active = 0 WHERE id = ?", (user_id,))
         db.commit()
+        db.close()
         return jsonify({"message": "Account deactivated successfully"}), 200
     except Exception as e:
         return jsonify({"message": f"Error deactivating account: {str(e)}"}), 500
@@ -118,6 +121,7 @@ def change_password():
         new_hashed_password = generate_password_hash(new_password)
         cursor.execute("UPDATE users SET password = ? WHERE id = ?", (new_hashed_password, user_id))
         db.commit()
+        db.close()
 
         return jsonify({'message': 'Password changed successfully'}), 200
     except Exception as e:
