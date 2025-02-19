@@ -69,24 +69,28 @@ def login():
         user_id, name, hashed_password, salt, is_active, role = user
 
         if check_password_hash(hashed_password, password + salt):
-            if is_active:
-                access_token = create_access_token(
-                    identity=user_id,
-                    additional_claims={
-                        "sub": str(user_id),
-                        "role": role
-                    }
-                )
+            if is_active == 0:
                 return jsonify({
-                    "access_token": access_token,
-                    "user": {
-                        "name": name,
-                        "email": email,
-                        "role": role
-                    }
-                }), 200
-            else:
-                return jsonify({"message": "Account is deactivated. Contact Support"}), 403
+                    "message": "Account is deactivated. Contact Support",
+                    "user": {"is_active": 0}
+                }), 403 
+
+            access_token = create_access_token(
+                identity=user_id,
+                additional_claims={
+                    "sub": str(user_id),
+                    "role": role
+                }
+            )
+            return jsonify({
+                "access_token": access_token,
+                "user": {
+                    "name": name,
+                    "email": email,
+                    "role": role,
+                    "is_active": is_active 
+                }
+            }), 200
     else:
         return jsonify({'message': 'Invalid email or password'}), 401
 

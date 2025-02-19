@@ -9,6 +9,8 @@ from db import init_db
 from resume import resume_bp
 from auth import auth_bp
 from user import user_bp
+from support import support_bp
+
 
 
 app = Flask(__name__)
@@ -24,6 +26,7 @@ jwt = JWTManager(app)
 app.register_blueprint(resume_bp, url_prefix='/api/resume')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(user_bp, url_prefix='/api/user')
+app.register_blueprint(support_bp, url_prefix='/api/support')
 
 
 
@@ -62,7 +65,7 @@ def admin_dashboard():
     return render_template('admin/dashboard.html')
 
 # Support dashboard
-@app.route('/support_dashboard', methods=['GET'])
+@app.route('/support', methods=['GET'])
 def support_dashboard():
     return render_template('support/dashboard.html')
 

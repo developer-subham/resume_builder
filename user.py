@@ -101,31 +101,37 @@ def change_password():
     try:
         user_id = get_jwt_identity()
         data = request.get_json()
+
+        if not data:
+            return jsonify({"error": "Invalid JSON request"}), 400
+
         old_password = data.get('old_password')
         new_password = data.get('new_password')
 
         if not old_password or not new_password:
-            return jsonify({"message": "Both old and new passwords are required"}), 400
+            return jsonify({"error": "Both old and new passwords are required"}), 400
 
         db = get_db()
         cursor = db.cursor()
+
         cursor.execute("SELECT password FROM users WHERE id = ?", (user_id,))
         user = cursor.fetchone()
 
         if not user:
-            return jsonify({'message': 'User not found'}), 404
+            return jsonify({"error": "User not found"}), 404
 
         if not check_password_hash(user[0], old_password):
-            return jsonify({'message': 'Incorrect old password'}), 401
+            return jsonify({"error": "Incorrect old password"}), 401
 
         new_hashed_password = generate_password_hash(new_password)
         cursor.execute("UPDATE users SET password = ? WHERE id = ?", (new_hashed_password, user_id))
         db.commit()
         db.close()
 
-        return jsonify({'message': 'Password changed successfully'}), 200
+        return jsonify({"message": "Password changed successfully"}), 200
     except Exception as e:
-        return jsonify({'message': f'Error changing password: {str(e)}'}), 500
+        print("Error:", str(e))  # Log error in the console
+        return jsonify({"error": f"Error changing password: {str(e)}"}), 500
 
 @user_bp.route('/upload_image', methods=['PATCH'])
 @jwt_required()

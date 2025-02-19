@@ -102,6 +102,12 @@ class AuthController {
             const data = await NonAuthenticatedRestAPIUtil.post('/auth/login', { email, password });
 
             if (data) {
+
+                if (data.user.is_active === 0) {
+                    alert("Your account is deactivated. Please contact our support.");
+                    return;
+                }
+    
                 localStorage.setItem('token', data.access_token);
                 localStorage.setItem('name', data.user.name);
                 switch (data.user.role) {
@@ -109,7 +115,7 @@ class AuthController {
                         window.location.href = "/admin_dashboard";
                         break;
                     case "customer_support":
-                        window.location.href = "/support_dashboard";
+                        window.location.href = "/support";
                         break;
                     case "user":
                     default:
@@ -121,7 +127,7 @@ class AuthController {
             }   
         } catch (error) {
             console.error('Login error:', error);
-            alert('An error occurred. Please try again later.');
+            alert('An error occurred. Check console for more details.');
         }
     }
     async handleLogout() {

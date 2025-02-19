@@ -11,7 +11,6 @@ class ChangePasswordController {
 
     async handleChangePassword(event) {
         event.preventDefault();
-        try {
             const oldPassword = document.getElementById('old-ps').value;
             const newPassword = document.getElementById('new-ps').value;
             const confirmPassword = document.getElementById('confirm-ps').value;
@@ -26,21 +25,21 @@ class ChangePasswordController {
                 return;
             }
 
-            await RestAPIUtil.post(
-                `user/change_password`,
-                {
-                    current_password: oldPassword,
-                    new_password: newPassword,
-                }
-            );
-
-            alert('Password changed successfully!');
-            this.changePasswordForm.reset();
-            window.location.href = '/settings';
-        } catch (error) {
-            console.error('Error changing password:', error);
-            alert("Failed to change password. Please try again.");
-        }
+            try {
+                await RestAPIUtil.post(
+                    `user/change_password`,
+                    {
+                        current_password: oldPassword,
+                        new_password: newPassword,
+                    }
+                );
+    
+                alert('Password changed successfully!');
+                this.changePasswordForm.reset();
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('Failed to change password. Please try again.');
+            }
     }
 }
 
