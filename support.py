@@ -47,3 +47,8 @@ def toggle_user_status(user_id):
     db.commit()
 
     return jsonify({"message": "User status updated", "new_status": new_status}), 200
+
+@support_bp.route('/logout', methods=['POST'])
+def logout():
+    response = jsonify({"message": "Logout successful"})
+    return response, 200

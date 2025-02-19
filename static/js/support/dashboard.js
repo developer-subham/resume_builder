@@ -3,6 +3,10 @@ import { RestAPIUtil } from '../common/restAPIUtil.js';
 class SupportDashboard {
     constructor() {
         this.loadUsers();
+        this.logout = document.getElementById('logoutBtn');
+        if (this.logout) {
+            this.logout.addEventListener("click", this.handleLogout.bind(this));
+        }
     }
 
     async loadUsers() {
@@ -74,6 +78,11 @@ class SupportDashboard {
         } catch (error) {
             console.error('Error updating user status:', error);
         }
+    }
+    async handleLogout(){
+        localStorage.removeItem("token");
+        alert("Logout successfull!");  
+        window.location.href = "/auth"; 
     }
 }
 
