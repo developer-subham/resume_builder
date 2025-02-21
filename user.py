@@ -6,11 +6,15 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import get_db
 from image_util import save_base64_image
+from datetime import datetime
+
 
 user_bp = Blueprint('user', __name__)
 
 UPLOAD_FOLDER = 'static/images/uploads/profile_pictures'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
 
 @user_bp.route('/', methods=['GET'])
 @jwt_required()
@@ -19,7 +23,7 @@ def get_user_details():
     db = get_db()
     cursor = db.cursor()
     
-    cursor.execute("SELECT id, name, email, gender, profile_image FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT id, name, email, gender, profile_image, updated_at FROM users WHERE id = ?", (user_id,))
     user = cursor.fetchone()
 
     if not user:
@@ -31,6 +35,7 @@ def get_user_details():
         "email": user[2],
         "gender": user[3],
         "profile_image": user[4] if user[4] else 'static/images/uploads/profile_pictures/default.png',
+        "updated_at": user[5]
     }
     return jsonify(user_data), 200
 
@@ -53,10 +58,11 @@ def update_user_details():
         if not profile_image_path:
             return jsonify({"error": "Invalid image data or format"}), 400
 
+    updated_at = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
     db = get_db()
     cursor = db.cursor()
-    query = "UPDATE users SET name = ?, email = ?, gender = ?"
-    params = [name, email, gender]
+    query = "UPDATE users SET name = ?, email = ?, gender = ?, updated_at = ?"
+    params = [name, email, gender, updated_at]
 
     if profile_image_path:
         query += ", profile_image = ?"
@@ -65,12 +71,11 @@ def update_user_details():
     query += " WHERE id = ?"
     params.append(user_id)
 
-
     cursor.execute(query, tuple(params))
     db.commit()
     db.close()
 
-    return jsonify({"message": "User details updated successfully"}), 200
+    return jsonify({"message": "User details updated successfully", "updated_at": updated_at}), 200
 
 @user_bp.route('/deactive_account', methods=['PATCH'])
 @jwt_required()
