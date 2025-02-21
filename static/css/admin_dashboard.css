@@ -1,0 +1,102 @@
+body {
+    background-color: #fff;
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #BCCCDC;
+    position: fixed;
+    padding-top: 20px;
+    color: black;
+    top: 0%;
+    z-index: 2;
+}
+.sidebar .logo {
+    display: block;
+    margin: 0 auto 20px;
+    width: 80%;
+}
+.sidebar a {
+    padding: 15px;
+    text-decoration: none;
+    display: block;
+    color: black;
+    transition: 0.3s;
+}
+.sidebar a:hover {
+    background-color: #1A252F;
+    padding-left: 20px;
+    color: #fff;
+}
+
+/* Navbar */
+.top-navbar {
+    background-color: #BCCCDC;
+    padding: 15px;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    color: black;
+    z-index: 1;
+}
+.top-navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+.top-navbar li {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.top-navbar .btn {
+    background-color: #8529ff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+.top-navbar .btn:hover {
+    background-color: #6d1ec7;
+}
+
+/* Content */
+.content-container {
+    margin-left: 270px;
+    margin-top: 80px;
+    padding: 20px;
+}
+.card {
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    border: none;
+}
+.card i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+.card1{
+    background-color: #ffe2e2;;
+}
+.card2{
+    background-color: #13deb940;
+}
+.card3{
+    background-color: #ffad1f40;
+}
+.header-color{
+    background-color: #1A252F;
+}

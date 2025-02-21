@@ -10,6 +10,8 @@ from resume import resume_bp
 from auth import auth_bp
 from user import user_bp
 from support import support_bp
+from admin import admin_bp
+
 
 
 
@@ -27,6 +29,8 @@ app.register_blueprint(resume_bp, url_prefix='/api/resume')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(user_bp, url_prefix='/api/user')
 app.register_blueprint(support_bp, url_prefix='/api/support')
+app.register_blueprint(admin_bp, url_prefix='/api/admin')
+
 
 
 
