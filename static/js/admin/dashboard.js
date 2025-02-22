@@ -8,7 +8,7 @@ class Dashboard {
         this.logoutButton = document.getElementById("logoutBtn");
         this.createResumeButton = document.getElementById("createResumeBtn");
         this.notificationButton = document.getElementById("notificationBtn");
-
+        this.genderChart = null;
         this.init();
     }
 
@@ -38,9 +38,14 @@ class Dashboard {
             let userTable = '';
 
             users.forEach(user => {
+                const profileImage = user.profile_image && user.profile_image.trim() !== "" 
+                    ? user.profile_image 
+                    : "/static/images/uploads/profile_pictures/default.png";
+
                 userTable += `
                     <tr data-user-id="${user.id}">
                         <td>${user.id}</td>
+                        <td><img src="${profileImage}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"></td>
                         <td>${user.name}</td>
                         <td>${user.email}</td>
                         <td>${user.gender}</td>
@@ -65,14 +70,67 @@ class Dashboard {
         }
     }
 
+    async fetchGenderStats() {
+        try {
+            const users = await RestAPIUtil.get('/admin/users');
+            let maleCount = 0, femaleCount = 0, otherCount = 0;
+
+            users.forEach(user => {
+                if (user.gender.toLowerCase() === "male") maleCount++;
+                else if (user.gender.toLowerCase() === "female") femaleCount++;
+                else otherCount++;
+            });
+
+            this.renderGenderChart(maleCount, femaleCount, otherCount);
+        } catch (error) {
+            console.error("Error fetching gender stats:", error);
+        }
+    }
+
+    renderGenderChart(male, female, other) {
+        const ctx = document.getElementById('genderChart').getContext('2d');
+
+        if (this.genderChart) {
+            this.genderChart.destroy();
+        }
+
+        this.genderChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Male', 'Female', 'Other'],
+                datasets: [{
+                    label: 'Gender Distribution',
+                    data: [male, female, other],
+                    backgroundColor: ['#3498db', '#48A6A7', '#f1c40f'],
+                    borderColor: ['#2980b9', '#48A6A7', '#f39c12'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     handleLogout() {
         localStorage.removeItem("token");
         window.location.href = "/auth";
     }
 
     init() {
+        this.fetchGenderStats();
         this.fetchStats();
-        this.loadUsers();  // 🔥 Call loadUsers() here to fetch user data when the page loads
+        this.loadUsers();  // Load users on page load
         this.logoutButton.addEventListener("click", () => this.handleLogout());
         this.createResumeButton.addEventListener("click", () => window.location.href = "/user/resumes");
         this.notificationButton.addEventListener("click", () => {
@@ -84,3 +142,4 @@ class Dashboard {
 
 // Initialize Dashboard
 document.addEventListener("DOMContentLoaded", () => new Dashboard());
+ 

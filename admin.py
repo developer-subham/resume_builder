@@ -54,13 +54,14 @@ def get_users():
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
     
-    cursor.execute("SELECT id, name, email, gender, is_active, created_at, updated_at FROM users")
+    cursor.execute("SELECT id, profile_image, name, email, gender, is_active, created_at, updated_at FROM users")
     users = cursor.fetchall()
     cursor.close()
 
     user_list = [
         {
             "id": user["id"],
+            "profile_image": user["profile_image"],
             "name": user["name"],
             "email": user["email"],
             "gender": user["gender"],
