@@ -42,6 +42,10 @@ def index():
 def auth_controller():
     return render_template('user/auth.html')
 
+@app.route('/forget_password', methods=['GET'])
+def forget_password():
+    return render_template('user/forgetPassword.html')
+
 @app.route('/user/resumes/', methods=['GET'])
 def resumes():
     return render_template('resume/resumes.html')
