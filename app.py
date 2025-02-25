@@ -72,6 +72,10 @@ def page_not_found(e):
 def admin_dashboard():
     return render_template('admin/dashboard.html')
 
+@app.route('/admin_users_page', methods=['GET'])
+def admin_users_page():
+    return render_template('admin/admin_users.html')
+
 # Support dashboard
 @app.route('/support', methods=['GET'])
 def support_dashboard():

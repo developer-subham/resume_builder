@@ -11,14 +11,14 @@ class ChangePasswordController {
 
     async handleChangePassword(event) {
         event.preventDefault();
-            const oldPassword = document.getElementById('old-ps').value;
-            const newPassword = document.getElementById('new-ps').value;
-            const confirmPassword = document.getElementById('confirm-ps').value;
+            let oldPasswordTag = document.getElementById('old-ps');
+            let newPasswordTag  = document.getElementById('new-ps');
+            let confirmPasswordTag  = document.getElementById('confirm-ps');
 
-            if (!oldPassword || !newPassword || !confirmPassword) {
-                alert('Please fill in all fields.');
-                return;
-            }
+
+            const oldPassword = oldPasswordTag.value;
+            const newPassword = newPasswordTag.value;
+            const confirmPassword = confirmPasswordTag.value;
 
             if (newPassword !== confirmPassword) {
                 alert('Confirm password does not match.');
@@ -26,7 +26,7 @@ class ChangePasswordController {
             }
 
             try {
-                await RestAPIUtil.post(
+                await RestAPIUtil.patch(
                     `user/change_password`,
                     {
                         current_password: oldPassword,
@@ -35,7 +35,10 @@ class ChangePasswordController {
                 );
     
                 alert('Password changed successfully!');
-                this.changePasswordForm.reset();
+                oldPasswordTag.value="";
+                newPasswordTag.value="";
+                confirmPasswordTag.value="";
+
             } catch (error) {
                 console.error('Error changing password:', error);
                 alert('Failed to change password. Please try again.');

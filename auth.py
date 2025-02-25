@@ -91,8 +91,10 @@ def login():
                     "is_active": is_active 
                 }
             }), 200
+        else:
+            return jsonify({'message': 'Invalid email or password.'}), 401
     else:
-        return jsonify({'message': 'Invalid email or password'}), 401
+        return jsonify({'message': 'User not found'}), 404
 
 
 @auth_bp.route('/logout', methods=['POST'])

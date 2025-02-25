@@ -118,3 +118,28 @@ body {
     max-width: 100%;
     height: auto;
 }
+table{
+    margin-top: 5%;
+}
+.input-group{
+    margin-top: 2%;
+    margin-left: 12%
+}
+.search{
+    border-radius: 15px;
+    border: none;
+    background-color: #eef7ff;
+    padding: 1%;
+    width: 80%;
+}
+.searchBtn{
+    margin-top: 2%;
+    border: none;
+    border-radius: 10px;
+    background-color: #8529ff;
+    color: #fff;
+}
+.searchBtn:hover{
+    background-color: #6d1ec7;
+    color: #fff;
+}

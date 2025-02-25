@@ -1,48 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Dashboard</title>
-    <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/236x/19/86/08/1986080fa9c26cf5104ce1576fdd9f95.jpg">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="static/css/admin_dashboard.css">
-</head>
-<body>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <img src="../static/images/logo.png" class="logo">
-        <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
-        <a href="#"><i class="fa-solid fa-user"></i> Users</a>
-        <a href="#"><i class="fa-solid fa-file-alt"></i> Resumes</a>
-        <a href="#"><i class="fa-solid fa-message"></i> Messages</a>
-        <a href="#"><i class="fa-solid fa-cog"></i> Settings</a>
-    </div>
-
-    <!-- Top Navbar -->
-    <nav class="top-navbar navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <ul class="d-flex justify-content-end w-100">
-                <li>
-                    <span id="notificationBtn" class="nav-item">
-                        <i class="fa-solid fa-bell"></i> Notifications
-                    </span>
-                </li>
-                <li>
-                    <span id="createResumeBtn" class="nav-item">
-                        <i class="fa-solid fa-circle-plus"></i> Create Resume
-                    </span>
-                </li>
-                <li>
-                    <button class="btn btn-danger" id="logoutBtn">
-                        <i class="fa-solid fa-sign-out-alt"></i> Logout
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </nav>  
+{% include 'common/admin_sidenavbar.html' %}
+{% include 'common/admin_topnavbar.html' %}
 
     <!-- Dashboard Content -->
     <div class="content-container">
@@ -93,28 +50,6 @@
         </div>
 
     </div>
-    <div class="col-md-12 row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <table class="table table-bordered">
-                <thead class="table-primary">
-                    <tr>
-                        <th>ID</th>
-                        <th>Profile Image</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Gender</th>
-                        <th>Status</th>
-                        <th>Created at</th>
-                        <th>Updated at</th>
-                    </tr>
-                </thead>
-                <tbody id="userTableBody">
-                    <!-- Users will be dynamically loaded here -->
-                </tbody>
-            </table>
-        </div>
-        
         <!-- Gender Analysis Chart -->
         <div class="col-md-2">
             <div class="gender-card">

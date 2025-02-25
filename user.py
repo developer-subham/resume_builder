@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from db import get_db
 from image_util import save_base64_image
 from datetime import datetime
+from flask_mail import Message
 
 
 user_bp = Blueprint('user', __name__)
@@ -110,32 +111,33 @@ def change_password():
         if not data:
             return jsonify({"error": "Invalid JSON request"}), 400
 
-        old_password = data.get('old_password')
+        current_password = data.get('current_password')
         new_password = data.get('new_password')
 
-        if not old_password or not new_password:
+        if not current_password or not new_password:
             return jsonify({"error": "Both old and new passwords are required"}), 400
 
         db = get_db()
         cursor = db.cursor()
 
-        cursor.execute("SELECT password FROM users WHERE id = ?", (user_id,))
+        cursor.execute("SELECT password, salt FROM users WHERE id = ?", (user_id,))
         user = cursor.fetchone()
+        salt = user[1]
 
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        if not check_password_hash(user[0], old_password):
+        if not check_password_hash(user[0], current_password + salt):
             return jsonify({"error": "Incorrect old password"}), 401
 
-        new_hashed_password = generate_password_hash(new_password)
+        new_hashed_password = generate_password_hash(new_password + salt)
         cursor.execute("UPDATE users SET password = ? WHERE id = ?", (new_hashed_password, user_id))
         db.commit()
         db.close()
 
         return jsonify({"message": "Password changed successfully"}), 200
     except Exception as e:
-        print("Error:", str(e))  # Log error in the console
+        print("Error:", str(e))
         return jsonify({"error": f"Error changing password: {str(e)}"}), 500
 
 @user_bp.route('/upload_image', methods=['PATCH'])
@@ -160,3 +162,57 @@ def upload_image():
         return jsonify({"message": "Image uploaded successfully!", "image_url": image_url}), 200
     except Exception as e:
         return jsonify({"error": f"Error processing image: {str(e)}"}), 500
+
+@user_bp.route('/request_password_reset', methods=['POST'])
+def request_password_reset():
+    data = request.get_json()
+    email = data.get("email")
+
+    if not email:
+        return jsonify({"message": "Email is required"}), 400
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
+    user = cursor.fetchone()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    reset_token = create_access_token(identity=user["id"], expires_delta=datetime.timedelta(hours=1))
+
+    reset_link = f"http://localhost:5001/reset_password?token={reset_token}"
+
+    msg = Message("Password Reset Request",
+                  sender="noreply@yourapp.com",
+                  recipients=[email])
+    msg.body = f"Click the link to reset your password: {reset_link}"
+    
+    mail.send(msg)
+
+    return jsonify({"message": "Password reset link sent to email"}), 200
+
+
+@user_bp.route('/reset-password', methods=['POST'])
+@jwt_required()
+def reset_password():
+    data = request.get_json()
+    new_password = data.get("new_password")
+
+    if not new_password:
+        return jsonify({"message": "New password is required"}), 400
+
+    # Get user ID from token
+    user_id = get_jwt_identity()
+
+    # Generate new salt and hash new password
+    new_salt = generate_salt()
+    hashed_new_password = generate_password_hash(new_password + new_salt)
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("UPDATE users SET password = ?, salt = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", 
+                   (hashed_new_password, new_salt, user_id))
+    db.commit()
+
+    return jsonify({"message": "Password has been reset successfully"}), 200

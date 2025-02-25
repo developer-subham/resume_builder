@@ -1,6 +1,7 @@
-from flask import Flask, jsonify, Blueprint
+from flask import Flask, request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required
 import sqlite3
+from werkzeug.security import generate_password_hash
 from db import get_db  # Ensure you have a `get_db()` function in `db.py`
 
 admin_bp = Blueprint('admin', __name__)
@@ -73,3 +74,49 @@ def get_users():
     ]
 
     return jsonify(user_list), 200
+
+@admin_bp.route('/users/<int:user_id>/update-status', methods=['PATCH'])
+@jwt_required()
+def update_user_status(user_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    data = request.get_json()
+    new_status = data.get("is_active")
+
+    if new_status not in [0, 1]:
+        return jsonify({"error": "Invalid status"}), 400
+
+    cursor.execute("UPDATE users SET is_active = ? WHERE id = ?", (new_status, user_id))
+    db.commit()
+    cursor.close()
+
+    return jsonify({"message": "User status updated successfully!"}), 200
+
+@admin_bp.route('/users/<int:user_id>/change_password', methods=['PATCH'])
+@jwt_required()
+def change_password_admin(user_id):
+    data = request.get_json()
+    new_password = data.get("password")
+
+    if not new_password:
+        return jsonify({"error": "Password cannot be empty"}), 400
+
+    db = get_db()
+    cursor = db.cursor()
+    
+    cursor.execute('SELECT salt FROM users WHERE id = ?', (user_id,))
+    user = cursor.fetchone()  # Fetch the first row
+    
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    salt = user[0]  # Extract the salt value
+    hashed_password = generate_password_hash(new_password + salt)
+
+    cursor.execute("UPDATE users SET password = ? WHERE id = ?", (hashed_password, user_id))
+    db.commit()
+    cursor.close()
+
+    return jsonify({"message": "Password changed successfully!"}), 200
+

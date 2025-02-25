@@ -31,45 +31,7 @@ class Dashboard {
             console.error("Error fetching stats:", error);
         }
     }
-
-    async loadUsers() {
-        try {
-            const users = await RestAPIUtil.get('/admin/users');
-            let userTable = '';
-
-            users.forEach(user => {
-                const profileImage = user.profile_image && user.profile_image.trim() !== "" 
-                    ? user.profile_image 
-                    : "/static/images/uploads/profile_pictures/default.png";
-
-                userTable += `
-                    <tr data-user-id="${user.id}">
-                        <td>${user.id}</td>
-                        <td><img src="${profileImage}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"></td>
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>${user.gender}</td>
-                        <td>
-                            <span class="badge ${user.is_active ? 'bg-success' : 'bg-danger'}">
-                                ${user.is_active ? 'Active' : 'Inactive'}
-                            </span>
-                        </td>
-                        <td>${user.created_at}</td>
-                        <td>${user.updated_at}</td>
-                    </tr>`;
-            });
-
-            const tableBody = document.getElementById('userTableBody');
-            if (tableBody) {
-                tableBody.innerHTML = userTable;
-            } else {
-                console.error("Table body element not found.");
-            }
-        } catch (error) {
-            console.error('Error loading users:', error);
-        }
-    }
-
+    
     async fetchGenderStats() {
         try {
             const users = await RestAPIUtil.get('/admin/users');
@@ -130,7 +92,6 @@ class Dashboard {
     init() {
         this.fetchGenderStats();
         this.fetchStats();
-        this.loadUsers();  // Load users on page load
         this.logoutButton.addEventListener("click", () => this.handleLogout());
         this.createResumeButton.addEventListener("click", () => window.location.href = "/user/resumes");
         this.notificationButton.addEventListener("click", () => {
