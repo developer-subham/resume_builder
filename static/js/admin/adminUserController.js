@@ -7,6 +7,7 @@
 
         init() {
             this.loadUsers();
+            this.setupSearchEvent();
         }
 
         async loadUsers() {
@@ -168,6 +169,76 @@
                 console.error("Error changing password:", error);
                 alert("Failed to change password.");
             }
+        }
+
+        setupSearchEvent() {
+            const searchButton = document.querySelector('.searchBtn');
+            if (!searchButton) {
+                console.error("Search button not found!");
+                return;
+            }
+    
+            searchButton.addEventListener('click', async () => {
+                const searchInput = document.querySelector('.search');
+                const searchValue = searchInput ? searchInput.value.trim() : "";
+    
+                if (searchValue === "") {
+                    alert("Please enter a name or email to search.");
+                    return;
+                }
+    
+                try {
+                    const response = await RestAPIUtil.get(`/admin/users/search?query=${encodeURIComponent(searchValue)}`);
+                    
+                    if (response && response.length > 0) {
+                        this.showUserSearchModal(response[0]);  // Show first matching user
+                    } else {
+                        alert("User not found.");
+                    }
+                } catch (error) {
+                    console.error("Error searching users:", error);
+                    alert("Failed to search for users.");
+                }
+            });
+        }
+    
+        showUserSearchModal(user) {
+            const modalElement = document.getElementById('userSearchModal');
+            const modalBody = document.getElementById('searchResultContainer');
+    
+            if (!modalElement || !modalBody) {
+                console.error("Modal elements not found.");
+                return;
+            }
+    
+            const profileImage = user.profile_image && user.profile_image.trim() !== ""
+                ? user.profile_image
+                : "/static/images/uploads/profile_pictures/default.png";
+    
+            modalBody.innerHTML = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="${profileImage}" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-8">
+                        <p><strong>ID:</strong> ${user.id}</p>
+                        <p><strong>Name:</strong> ${user.name}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Gender:</strong> ${user.gender}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge ${user.is_active ? 'bg-success' : 'bg-danger'}">
+                                ${user.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                        </p>
+                        <p><strong>Created At:</strong> ${user.created_at}</p>
+                        <p><strong>Updated At:</strong> ${user.updated_at}</p>
+                    </div>
+                </div>
+            `;
+    
+            // Ensure Bootstrap modal is properly initialized
+            const modalInstance = new bootstrap.Modal(modalElement);
+            modalInstance.show();
         }
     }
 

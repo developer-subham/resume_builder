@@ -106,6 +106,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: center;
+    margin-left: 10%;
 }
 
 .gender-card h2 {

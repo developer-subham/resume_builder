@@ -120,3 +120,42 @@ def change_password_admin(user_id):
 
     return jsonify({"message": "Password changed successfully!"}), 200
 
+@admin_bp.route('/users/search', methods=['GET'])
+@jwt_required()
+def search_users():
+    search_query = request.args.get("query", "").strip()
+
+    if not search_query:
+        return jsonify({"error": "Search query cannot be empty"}), 400
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    cursor.execute("""
+        SELECT id, profile_image, name, email, gender, is_active, created_at, updated_at
+        FROM users
+        WHERE name LIKE ? OR email LIKE ?
+    """, (f"%{search_query}%", f"%{search_query}%"))
+
+    users = cursor.fetchall()
+    cursor.close()
+
+    if not users:
+        return jsonify({"error": "No users found"}), 404
+
+    user_list = [
+        {
+            "id": user["id"],
+            "profile_image": user["profile_image"] if user["profile_image"] else "/static/images/uploads/profile_pictures/default.png",
+            "name": user["name"],
+            "email": user["email"],
+            "gender": user["gender"],
+            "is_active": user["is_active"],
+            "created_at": user["created_at"],
+            "updated_at": user["updated_at"]
+        }
+        for user in users
+    ]
+
+    return jsonify(user_list), 200
