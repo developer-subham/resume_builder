@@ -144,3 +144,15 @@ table{
     background-color: #6d1ec7;
     color: #fff;
 }
+.btn-page{
+    border-radius: 10px;
+    background-color: #328e5e;
+    color: #fff;
+}
+.btn-page:hover{
+    background-color: #1a7342;
+    color: #fff;
+}
+#pagination-controls{
+    margin-top: 1%;
+}

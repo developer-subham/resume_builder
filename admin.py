@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required
 import sqlite3
 from werkzeug.security import generate_password_hash
+from math import ceil
 from db import get_db  # Ensure you have a `get_db()` function in `db.py`
 
 admin_bp = Blueprint('admin', __name__)
@@ -54,11 +55,26 @@ def get_users():
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    
-    cursor.execute("SELECT id, profile_image, name, email, gender, is_active, created_at, updated_at FROM users")
+
+    # Get pagination parameters from the request
+    page = request.args.get('page', default=1, type=int)
+    page_size = request.args.get('page_size', default=10, type=int)
+    offset = (page - 1) * page_size
+
+    # Query to get paginated users
+    cursor.execute("""
+        SELECT id, profile_image, name, email, gender, is_active, created_at, updated_at 
+        FROM users 
+        LIMIT ? OFFSET ?
+    """, (page_size, offset))
     users = cursor.fetchall()
+
+    # Query to get the total number of users for pagination
+    cursor.execute("SELECT COUNT(*) as total FROM users")
+    total_users = cursor.fetchone()["total"]
     cursor.close()
 
+    # Prepare the response
     user_list = [
         {
             "id": user["id"],
@@ -73,7 +89,15 @@ def get_users():
         for user in users
     ]
 
-    return jsonify(user_list), 200
+    return jsonify({
+        "users": user_list,
+        "pagination": {
+            "page": page,
+            "page_size": page_size,
+            "total_users": total_users,
+            "total_pages": ceil(total_users / page_size)
+        }
+    }), 200
 
 @admin_bp.route('/users/<int:user_id>/update-status', methods=['PATCH'])
 @jwt_required()
